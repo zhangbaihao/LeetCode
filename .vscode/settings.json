@@ -1,0 +1,21 @@
+{
+    "files.associations": {
+        "limits": "cpp",
+        "vector": "cpp",
+        "iostream": "cpp",
+        "array": "cpp",
+        "sstream": "cpp",
+        "string_view": "cpp",
+        "initializer_list": "cpp",
+        "utility": "cpp",
+        "string": "cpp",
+        "*.tcc": "cpp",
+        "memory": "cpp",
+        "istream": "cpp",
+        "tuple": "cpp",
+        "algorithm": "cpp",
+        "ostream": "cpp",
+        "queue": "cpp"
+    },
+    "cmake.generator": "MinGW Makefiles"
+}
