@@ -255,6 +255,70 @@ public:
         return -1;
     }
 };
+// 128. 最长连续序列
+class LT128Solution
+{
+public:
+    //输入：nums = [0,3,7,2,5,8,4,6,0,1] 输出：9 0-8 O(n)
+    //暴力解法
+    int longestConsecutive(vector<int> &nums)
+    {
+        if (nums.empty())
+        {
+            return 0;
+        }
+        sort(nums.begin(), nums.end());
+        int in = nums[0];
+        int count = 1;
+        int res = 1;
+        for (int i = 1; i < nums.size(); i++)
+        {
+            if (in + 1 == nums[i])
+            {
+                count++;
+            }
+            else if (in == nums[i])
+            {
+            }
+            else
+            {
+                count = 1;
+            }
+            in = nums[i];
+            res = max(count, res);
+        }
+        return res;
+    }
+    //利用unordered_set 去重 且可以快速计算每个元素的个数
+    int longestConsecutive2(vector<int> &nums)
+    {
+        unordered_set<int> num_set;
+        for (const int &num : nums)
+        {
+            num_set.insert(num);
+        }
+
+        int longestStreak = 0;
+
+        for (const int &num : num_set)
+        {   // 跳过3 7 4 5 6  4567的计算
+            if (!num_set.count(num - 1))
+            {
+                int currentNum = num;
+                int currentStreak = 1;
+
+                while (num_set.count(currentNum + 1))
+                {
+                    currentNum += 1;
+                    currentStreak += 1;
+                }
+
+                longestStreak = max(longestStreak, currentStreak);
+            }
+        }
+        return longestStreak;
+    }
+};
 // LT51 数组中的逆序对
 /*
 描述
