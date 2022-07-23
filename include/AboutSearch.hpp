@@ -172,6 +172,34 @@ public:
         return false;
     }
 };
+// 139. 单词拆分
+class LT139Solution
+{
+public:
+    bool wordBreak(string s, vector<string> &wordDict)
+    {
+        unordered_set<string> m;
+        for (auto s : wordDict)
+        {
+            m.insert(s);
+        }
+        int size = s.length();
+        //定义 dp[i] 表示字符串 s 前 i 个字符组成的字符串,s[0..i−1] 是否能被空格拆分成若干个字典中出现的单词
+        vector<bool> dp(size + 1, false);
+        dp[0] = true;
+        for (int i = 1; i <= size; i++)
+        {
+            for (int j = 0; j < i; j++)
+            {
+                if(dp[j] && m.find(s.substr(j,i-j)) != m.end()){
+                    dp[i] = true;
+                    break;
+                }
+            }
+        }
+        return dp[size];
+    }
+};
 // LT11 旋转数组的最小数字
 class LT11Solution
 {

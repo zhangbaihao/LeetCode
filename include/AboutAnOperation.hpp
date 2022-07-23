@@ -71,6 +71,33 @@ public:
         return res;
     }
 };
+// 136. 只出现一次的数字
+class LT136Solution
+{
+public:
+    //
+    int singleNumber(vector<int> &nums)
+    {
+        unordered_map<int, int> m;
+        for (auto i : nums)
+        {
+            m[i]++;
+        }
+        for (auto it = m.begin(); it != m.end(); it++)
+        {
+            if (it->second == 1)
+                return it->first;
+        }
+        return 0;
+    }
+    int singleNumber2(vector<int> &nums)
+    {
+        int ret = 0;
+        for (auto e : nums)
+            ret ^= e;
+        return ret;
+    }
+};
 // LT56 数组中只出现一次的两个数字
 class LT56Solution
 {

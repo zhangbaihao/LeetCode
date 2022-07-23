@@ -183,6 +183,7 @@ public:
         return head->next;
     }
 };
+
 // LT6 从尾到头打印链表
 //输入一个链表的头节点，按链表从尾到头的顺序返回每个节点的值
 class LT6Solution
@@ -292,8 +293,66 @@ public:
         return nullptr;
     }
 };
-
-// LT23 链表中环的入口结点
+//141. 环形链表
+class LT141Solution {
+public:
+    bool hasCycle(ListNode *head) {
+        if(!head)
+            return false;
+        ListNode *fast = head->next;
+        ListNode *slow = head;
+        while(fast && fast->next && fast->next->next){
+            if(fast == slow)
+                return true;
+            fast = fast->next->next;
+            slow = slow->next;
+        }
+        return false;
+    }
+};
+// 142. 环形链表 II
+class LT142Solution
+{
+public:
+    ListNode *detectCycle2(ListNode *head)
+    {
+        unordered_set<ListNode *> seen;
+        while (head != nullptr)
+        {
+            if (seen.count(head))
+            {
+                return head;
+            }
+            seen.insert(head);
+            head = head->next;
+        }
+        return nullptr;
+    }
+    //设 slow 走了x 则fast走了 2x 则一圈长度等于2x-x=n
+    // fast与slow相遇点到环入口点的距离 等于 从原点走到环入口的距离
+    ListNode *detectCycle(ListNode *head)
+    {
+        if (!head || !head->next || !head->next->next)
+            return nullptr;
+        ListNode *slow = head->next;
+        ListNode *fast = head->next->next;
+        while (fast != slow)
+        {
+            if (fast->next == nullptr || fast->next->next == nullptr)
+                return nullptr;
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+        //这里fast肯定等于slow
+        fast = head;
+        while (fast != slow)
+        {
+            slow = slow->next;
+            fast = fast->next;
+        }
+        return fast;
+    }
+};
 class LT23Solution
 {
 public:
