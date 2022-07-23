@@ -476,7 +476,7 @@ public:
         }
         return a[number];
     }
-};Z
+};
 
 // LT47 礼物的最大价值
 class LT47Solution
