@@ -14,9 +14,15 @@ using namespace std;
 int main()
 {
     cout << "---Solution Call---" << endl;
-    //Solution test;
-
-    // test.maxProfit();
-
+    Solution test;
+    ListNode a(1);
+    ListNode b(2);
+    ListNode c(3);
+    ListNode d(4);
+    a.next = &b;
+    b.next = &c;
+    c.next = &d;
+    d.next = &b;
+    test.detectCycle(&a);
     return 0;
 }
