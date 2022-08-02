@@ -15,7 +15,9 @@
         "tuple": "cpp",
         "algorithm": "cpp",
         "ostream": "cpp",
-        "queue": "cpp"
+        "queue": "cpp",
+        "unordered_map": "cpp",
+        "new": "cpp"
     },
     "cmake.generator": "MinGW Makefiles"
 }

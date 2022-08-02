@@ -353,6 +353,88 @@ public:
         return fast;
     }
 };
+//146. LRU 缓存
+class LRUCache
+{
+    struct CLinkedHashMap
+    {
+        int key, value;
+        CLinkedHashMap *prev;
+        CLinkedHashMap *next;
+        CLinkedHashMap() : key(0), value(0), prev(nullptr), next(nullptr) {}
+        CLinkedHashMap(int _key, int _value) : key(_key), value(_value), prev(nullptr), next(nullptr) {}
+    };
+
+private:
+    unordered_map<int, CLinkedHashMap *> cache;
+    CLinkedHashMap *head;
+    CLinkedHashMap *tail;
+    int size;
+    int capacity;
+    void moveToHead(CLinkedHashMap *node)
+    {
+        if (node->next)
+            node->next->prev = node->prev;
+
+        if (node->prev)
+            node->prev->next = node->next;
+        
+        head->next->prev = node;
+        node->next = head->next;
+        head->next = node;
+        node->prev = head;
+    }
+
+public:
+    LRUCache(int capacity) : capacity(capacity), size(0)
+    {
+        head = new CLinkedHashMap();
+        tail = new CLinkedHashMap();
+        head->next = tail;
+        tail->prev = head;
+    }
+
+    int get(int key)
+    {
+        if (cache.count(key) == 0)
+        {
+            return -1;
+        }
+        int value = cache[key]->value;
+        moveToHead(cache[key]);
+        return value;
+    }
+
+    void put(int key, int value)
+    {
+        if (!cache.count(key))
+        { //容量未满时，添加新的
+            if (size < capacity)
+            {
+                CLinkedHashMap *node = new CLinkedHashMap(key, value);
+                moveToHead(node);
+                size++;
+                cache.insert(make_pair(key, node));
+            }
+            else
+            {
+                CLinkedHashMap *node = tail->prev;
+                cache.erase(node->key);
+                cache.insert(make_pair(key, node));
+                node->key = key;
+                node->value = value;
+                moveToHead(node);
+            }
+        }
+        else
+        {
+            //有对应key值 更新value 并且移动到链表头既可以
+            CLinkedHashMap *node = cache[key];
+            node->value = value;
+            moveToHead(node);
+        }
+    }
+};
 class LT23Solution
 {
 public:
