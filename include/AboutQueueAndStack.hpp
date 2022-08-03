@@ -89,8 +89,8 @@ private:
     stack<int> stack1;
     stack<int> stack2;
 };
-// LT30 包含min函数的栈
-class LT30Solution
+// LT155. 最小栈
+class LT155olution
 {
 public:
     stack<int> stack1;
@@ -214,7 +214,7 @@ public:
             ++t_map[c];
         }
         // ansLeft 存储可行窗口的左指针索引，len 为可行窗口的长度
-        int len = INT_MAX, left = 0, right = -1, ansLeft = -1; 
+        int len = INT_MAX, left = 0, right = -1, ansLeft = -1;
         int length_s = s.size();
         while (right < length_s)
         {
@@ -342,7 +342,7 @@ public:
         return ans;
     }
 };
-//85. 最大矩形
+// 85. 最大矩形
 class LT085Solution
 {
 public:
