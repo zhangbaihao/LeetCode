@@ -14,6 +14,16 @@ using namespace std;
 int main()
 {
     cout << "---Solution Call---" << endl;
-    //Solution test;
+    LT200Solution test;
+    vector<vector<char>> grid;
+    grid.push_back(vector<char>({'1', '1', '1'}));
+    grid.push_back(vector<char>({'0', '1', '0'}));
+    grid.push_back(vector<char>({'1', '1', '1'}));
+    // grid.push_back(vector<char>({'1', '0', '1', '1', '0', '1', '1'}));
+    //  grid.push_back(vector<char>({'1', '1', '0', '0', '0'}));
+    //  grid.push_back(vector<char>({'1', '1', '0', '0', '0'}));
+    //  grid.push_back(vector<char>({'0', '0', '1', '0', '0'}));
+    //  grid.push_back(vector<char>({'0', '0', '0', '1', '1'}));
+    test.numIslands(grid);
     return 0;
 }

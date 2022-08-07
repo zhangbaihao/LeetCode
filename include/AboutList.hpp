@@ -250,44 +250,37 @@ public:
         return pHead3->next;
     }
 };
-// LT52 两个链表的第一个公共结点
-class LT52Solution
+// 160. 相交链表
+class LT160Solution
 {
 public:
-    ListNode *FindFirstCommonNode(ListNode *pHead1, ListNode *pHead2)
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB)
     {
-        if (!pHead1 || !pHead2)
-            return nullptr;
-        ListNode *p1 = pHead1;
-        ListNode *p2 = pHead2;
-
-        bool p1_p2 = true;
-        bool p2_p1 = true;
-        while (p1 || p2)
+        ListNode *a1 = headA;
+        ListNode *b1 = headB;
+        bool flaga = false;
+        bool flagb = false;
+        while (a1 && b1)
         {
-            if (p1->val == p2->val)
-                return p1;
-            if (!p1->next)
+            if (a1 == b1)
+                return a1;
+            if (!flaga && !a1->next)
             {
-                if (!p1_p2)
-                    return nullptr;
-                p1 = pHead2;
-                p1_p2 = false;
+                a1 = headB;
+                flaga = true;
             }
             else
             {
-                p1 = p1->next;
+                a1 = a1->next;
             }
-            if (!p2->next)
+            if (!flagb && !b1->next)
             {
-                if (!p2_p1)
-                    return nullptr;
-                p2 = pHead1;
-                p2_p1 = false;
+                b1 = headA;
+                flagb = true;
             }
             else
             {
-                p2 = p2->next;
+                a1 = a1->next;
             }
         }
         return nullptr;

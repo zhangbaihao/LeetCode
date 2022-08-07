@@ -591,3 +591,24 @@ public:
         return maxvalue;
     }
 };
+
+// 169. 多数元素
+class LT169Solution
+{
+public:
+    int majorityElement(vector<int> &nums)
+    {
+        int n = nums.size();
+        int k = n / 2;
+        map<int, int> m;
+        for (int i = 0; i < n; i++)
+        {
+            m[nums[i]]++;
+            if (m[nums[i]] > k)
+            {
+                return nums[i];
+            }
+        }
+        return 0;
+    }
+};

@@ -296,3 +296,47 @@ public:
         return number % 10;
     }
 };
+// 200. 岛屿数量
+class LT200Solution
+{
+    void dfs(vector<vector<char>> &grid, int i, int j)
+    {
+        int h = grid.size();
+        int w = grid[0].size();
+
+        grid[i][j] = '0';
+        //上下行清空
+        if (i - 1 >= 0 && grid[i - 1][j] == '1')
+            dfs(grid, i - 1, j);
+        if (i + 1 < h && grid[i + 1][j] == '1')
+            dfs(grid, i + 1, j);
+        //左右列清空
+        if (j - 1 >= 0 && grid[i][j - 1] == '1')
+            dfs(grid, i, j - 1);
+        if (j + 1 < w && grid[i][j + 1] == '1')
+            dfs(grid, i, j + 1);
+    }
+public:
+    int numIslands(vector<vector<char>> &grid)
+    {
+        int h = grid.size();
+        if (!h)
+            return 0;
+        int w = grid[0].size();
+
+        int num_islands = 0;
+        for (int i = 0; i < h; ++i)
+        {
+            for (int j = 0; j < w; ++j)
+            {
+                if (grid[i][j] == '1')
+                {
+                    ++num_islands;
+                    //把上下左右连着的岛屿 清空成0
+                    dfs(grid, i, j);
+                }
+            }
+        }
+        return num_islands;
+    }
+};
