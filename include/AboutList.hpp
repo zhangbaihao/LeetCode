@@ -286,16 +286,19 @@ public:
         return nullptr;
     }
 };
-//141. 环形链表
-class LT141Solution {
+// 141. 环形链表
+class LT141Solution
+{
 public:
-    bool hasCycle(ListNode *head) {
-        if(!head)
+    bool hasCycle(ListNode *head)
+    {
+        if (!head)
             return false;
         ListNode *fast = head->next;
         ListNode *slow = head;
-        while(fast && fast->next && fast->next->next){
-            if(fast == slow)
+        while (fast && fast->next && fast->next->next)
+        {
+            if (fast == slow)
                 return true;
             fast = fast->next->next;
             slow = slow->next;
@@ -346,7 +349,7 @@ public:
         return fast;
     }
 };
-//146. LRU 缓存
+// 146. LRU 缓存
 class LRUCache
 {
     struct CLinkedHashMap
@@ -371,7 +374,7 @@ private:
 
         if (node->prev)
             node->prev->next = node->next;
-        
+
         head->next->prev = node;
         node->next = head->next;
         head->next = node;
@@ -724,5 +727,26 @@ public:
             }
         }
         return head;
+    }
+};
+// 206. 反转链表
+class LT206Solution
+{
+public:
+    ListNode *reverseList(ListNode *head)
+    {
+        if (!head || !head->next)
+            return head;
+        ListNode *new_head = new ListNode(-1);
+        ListNode *cur = new_head;
+        ListNode *a = head;
+        while (a)
+        {
+            ListNode *next = a->next;
+            a->next = cur->next;
+            cur->next = a;
+            a = next;
+        }
+        return new_head->next;
     }
 };
