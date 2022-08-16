@@ -612,3 +612,22 @@ public:
         return 0;
     }
 };
+//240. 搜索二维矩阵 II
+class LT240Solution {
+public:
+    bool searchMatrix(vector<vector<int>>& matrix, int target) {
+        int rows = matrix.size();
+        int cols = matrix[0].size();
+        int row = rows - 1, col = 0;
+        while (col < cols && row >= 0)
+        {
+            if (matrix[row][col] == target)
+                return true;
+            else if (matrix[row][col] > target)
+                row--;
+            else
+                col++;
+        }
+        return false;
+    }
+};

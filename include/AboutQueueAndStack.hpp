@@ -479,3 +479,31 @@ public:
         return ret;
     }
 };
+//239. 滑动窗口最大值
+class LT239Solution {
+public:
+    vector<int> maxSlidingWindow(vector<int> &nums, int k)
+    {
+        vector<int> ans;
+        deque<int> m_deque;
+        int n = nums.size();
+        int maxValue = 0;
+        for (int i = 0; i < n; i++)
+        {
+            while (!m_deque.empty() && nums[m_deque.back()] < nums[i])
+            {
+                //新来的比前一个都大，前一个可以不要了
+                m_deque.pop_back();
+            }
+            m_deque.push_back(i);
+            // front是当前最大的，如果过期则抛弃
+            if (m_deque.front() + k <= i)
+            {
+                m_deque.pop_front();
+            }
+            if (i + 1 >= k)
+                ans.push_back(nums[m_deque.front()]);
+        }
+        return ans;
+    }
+};

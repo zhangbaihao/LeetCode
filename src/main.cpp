@@ -11,9 +11,11 @@
 #include "AboutTree.hpp"
 using namespace std;
 
+
 int main()
 {
     cout << "---Solution Call---" << endl;
+    multiset<int> a;
     LT200Solution test;
     vector<vector<char>> grid;
     grid.push_back(vector<char>({'1', '1', '1'}));

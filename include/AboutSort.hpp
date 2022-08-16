@@ -319,6 +319,27 @@ public:
         return longestStreak;
     }
 };
+//238. 除自身以外数组的乘积
+class LT238Solution
+{
+public:
+    vector<int> productExceptSelf(vector<int> &nums)
+    {
+        int n = nums.size();
+        vector<int> B(n, 1);
+        for (int i = 1; i < n; i++)
+        {
+            B[i] = B[i - 1] * nums[i - 1];
+        }
+        int temp = 1;
+        for (int i = n - 1; i >= 0; i--)
+        {
+            B[i] *= temp;
+            temp *= nums[i];
+        }
+        return B;
+    }
+};
 // LT51 数组中的逆序对
 /*
 描述
@@ -560,7 +581,7 @@ class HeapSortSolution
     void heapify_build(vector<int> &nums, int n)
     {
         //由最后一个结点下标是n-1，parent = (i-1)/2
-        //从树的倒数第二层第一个结点开始，对每个结点进行heapify操作，然后向上走
+        //从最后一个结点的 倒数第二层结点开始，对每个结点进行heapify操作，然后向上走
         int temp = (n - 2) / 2;
         for (int i = temp; i >= 0; i--)
             heapify(nums, n, i);
