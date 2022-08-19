@@ -603,3 +603,21 @@ class HeapSortSolution
         }
     }
 };
+//283. 移动零
+class LT283Solution
+{
+public:
+    void moveZeroes(vector<int> &nums)
+    {
+        vector<int> temp(nums.size(), 0);
+        int j = 0;
+        for (int i = 0; i < nums.size(); i++)
+        {
+            if (nums[i] != 0)
+            {
+                temp[j++] = nums[i];
+            }
+        }
+        std::swap(nums, temp);
+    }
+};

@@ -750,3 +750,40 @@ public:
         return new_head->next;
     }
 };
+// 287. 寻找重复数
+class LT287Solution
+{
+public:
+    int findDuplicate(vector<int> &nums)
+    {
+        int slow = 0, fast = 0;
+        do
+        {
+            slow = nums[slow];
+            fast = nums[nums[fast]];
+        } while (slow != fast);
+        slow = 0;
+        while (slow != fast)
+        {
+            slow = nums[slow];
+            fast = nums[fast];
+        }
+        return slow;
+    }
+    unordered_map<int, int> m_map;
+    int findDuplicate2(vector<int> &nums)
+    {
+        for (int i = 0; i < nums.size(); i++)
+        {
+            if (m_map.count(nums[i]))
+            {
+                return nums[i];
+            }
+            else
+            {
+                m_map[nums[i]]++;
+            }
+        }
+        return 0;
+    }
+};

@@ -31,7 +31,7 @@ public:
         return res;
     }
 };
-//114. 二叉树展开为链表
+// 114. 二叉树展开为链表
 class LT114Solution
 {
 public:
@@ -47,7 +47,7 @@ public:
     void flatten(TreeNode *root)
     {
         pre(root);
-        if(q.empty())
+        if (q.empty())
             return;
         TreeNode *temp = q[0];
         for (int i = 1; i < q.size(); i++)
@@ -584,6 +584,58 @@ public:
         return DeserializeCore(str);
     }
 };
+// 297. 二叉树的序列化与反序列化
+class LT297Solution
+{
+public:
+    // Encodes a tree to a single string.
+    string serialize(TreeNode *root)
+    {
+        if (!root)
+            return "#!";
+        string res = std::to_string(root->val) + "!";
+        res += serialize(root->left);
+        res += serialize(root->right);
+        return res;
+    }
+    TreeNode *DeserializeCore(string data, int &index)
+    {
+        if (data[index] == '#')
+        {
+            index++; //跳过#号
+            return nullptr;
+        }
+
+        int num = 0;
+        bool aNegativeNumber = false;
+        while (data[index] != '!')
+        {
+            if (data[index] == '-')
+            {
+                aNegativeNumber = true;
+            }
+            else
+            {
+                num = num * 10 + data[index] - '0';
+            }
+            index++;
+        }
+        if (aNegativeNumber)
+            num = -num;
+        TreeNode *node = new TreeNode(num);
+        //++index 跳过!
+        node->left = DeserializeCore(data, ++index);
+        node->right = DeserializeCore(data, ++index);
+        return node;
+    }
+    // Decodes your encoded data to tree.
+    TreeNode *deserialize(string data)
+    {
+        int index = 0;
+        TreeNode *res = DeserializeCore(data, index);
+        return res;
+    }
+};
 // LT84 二叉树中和为某一值的路径(三)
 class LT84Solution
 {
@@ -711,7 +763,7 @@ public:
         return o2;
     }
 };
-//236. 二叉树的最近公共祖先
+// 236. 二叉树的最近公共祖先
 class LT236Solution
 {
 public:
