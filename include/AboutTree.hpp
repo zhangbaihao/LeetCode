@@ -824,3 +824,29 @@ public:
         return root->val;
     }
 };
+//337. 打家劫舍 III
+class LT337Solution
+{
+public:
+    // f[i]偷i结点价值最大 g[i]代表不偷i结点的价值最大
+    unordered_map<TreeNode *, int> f, g;
+    void dfs(TreeNode *node)
+    {
+        if (!node)
+        {
+            return;
+        }
+        dfs(node->left);
+        dfs(node->right);
+        //偷f[node] 则左右子树不能偷
+        f[node] = node->val + g[node->left] + g[node->right];
+        //不偷g[node] 左+右子树可以偷也可以不偷 取最大值和
+        g[node] = max(f[node->left], g[node->left]) + max(f[node->right], g[node->right]);
+    }
+
+    int rob(TreeNode *root)
+    {
+        dfs(root);
+        return max(f[root], g[root]);
+    }
+};
