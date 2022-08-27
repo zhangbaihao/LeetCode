@@ -507,3 +507,82 @@ public:
         return ans;
     }
 };
+
+//394. 字符串解码
+class LT394Solution
+{
+public:
+    //计算栈中字符组成的 乘积数 10[abc] 这里的10
+    int calculateTheMultiplier(stack<char> &st)
+    {
+        int number = 0;
+        string str = "";
+        while (!st.empty())
+        {
+            char c = st.top();
+            if (c <= '9' && c >= '0')
+            {
+                str = c + str;
+                st.pop();
+            }
+            else
+            {
+                break;
+            }
+        }
+        if (str != "")
+        {
+            number = atoi(str.c_str());
+        }
+        return number;
+    }
+    string decodeString(string s)
+    {
+        stack<char> st;
+        string res = "";
+        for (auto v : s)
+        {
+            if (v == ']')
+            {
+                string temp = "";
+                //将[] 中的字符合并字符串
+                while (!st.empty() && st.top() != '[')
+                {
+                    char c = st.top();
+                    if (c >= 'a' && c <= 'z')
+                    {
+                        temp = st.top() + temp;
+                        st.pop();
+                    }
+                }
+                //弹出'['
+                st.pop();
+                int number = calculateTheMultiplier(st);
+                for (int i = 0; i < number; i++)
+                {
+                    //栈空 即可直接+到结果中
+                    if (st.empty())
+                    {
+                        res = res + temp;
+                    }else{
+                        //2[2[ab]] -> 将2[ab]转成abab入栈
+                        for(auto c : temp)
+                            st.push(c);
+                    }
+                }        
+            }
+            else
+            {   //栈空 即可直接+ res到结果中
+                if (v >= 'a' && v <= 'z' && st.empty())
+                {
+                    res += v;
+                }
+                else
+                {
+                    st.push(v);
+                }
+            }
+        }
+        return res;
+    }
+};
