@@ -39,7 +39,6 @@ public:
     }
 };
 
-
 // LT53 数字在升序数组中出现的次数
 class LT53Solution
 {
@@ -191,7 +190,8 @@ public:
         {
             for (int j = 0; j < i; j++)
             {
-                if(dp[j] && m.find(s.substr(j,i-j)) != m.end()){
+                if (dp[j] && m.find(s.substr(j, i - j)) != m.end())
+                {
                     dp[i] = true;
                     break;
                 }
@@ -316,6 +316,7 @@ class LT200Solution
         if (j + 1 < w && grid[i][j + 1] == '1')
             dfs(grid, i, j + 1);
     }
+
 public:
     int numIslands(vector<vector<char>> &grid)
     {
@@ -338,5 +339,26 @@ public:
             }
         }
         return num_islands;
+    }
+};
+// 240. 搜索二维矩阵 II
+class LT240Solution
+{
+public:
+    bool searchMatrix(vector<vector<int>> &matrix, int target)
+    {
+        int rows = matrix.size();
+        int cols = matrix[0].size();
+        int row = rows - 1, col = 0;
+        while (col < cols && row >= 0)
+        {
+            if (matrix[row][col] == target)
+                return true;
+            else if (matrix[row][col] > target)
+                row--;
+            else
+                col++;
+        }
+        return false;
     }
 };

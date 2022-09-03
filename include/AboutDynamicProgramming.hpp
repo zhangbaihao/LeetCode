@@ -755,7 +755,7 @@ public:
             {
                 highBit = i;
             }
-            //dp[15] = dp[15-8] + 1 = dp[7-4] + 2 = dp[3-2] + 3 = dp[1]+4
+            // dp[15] = dp[15-8] + 1 = dp[7-4] + 2 = dp[3-2] + 3 = dp[1]+4
             dp[i] = dp[i - highBit] + 1;
         }
         return dp;
@@ -812,9 +812,128 @@ public:
                 }
             }
         }
-        if(dp[n - 1][target] == 1)
+        if (dp[n - 1][target] == 1)
             return true;
         else
             return false;
+    }
+};
+// 416. 分割等和子集
+class LT416Solution
+{
+public:
+    bool canPartition(vector<int> &nums)
+    {
+        int n = nums.size();
+        if (n < 2)
+        {
+            return false;
+        }
+        int sum = accumulate(nums.begin(), nums.end(), 0);
+        //总和为奇数 则两个子集一定不相等
+        if (sum % 2 != 0)
+            return false;
+        //题目指定nums[] >= 1
+        int maxNum = *max_element(nums.begin(), nums.end());
+        //计算每个子集合target
+        int target = sum / 2;
+        if (maxNum > target)
+        {
+            return false;
+        }
+        // dp[i][j]表示下标nums[0]-nums[i]和等于j
+        vector<vector<int>> dp(n, vector<int>(target + 1, 0));
+        for (int i = 0; i < n; i++)
+        {
+            dp[i][0] = true;
+        }
+        //满足本身 {nums[0]} 符合子集1 空{}子集2
+        dp[0][nums[0]] = true;
+        for (int i = 1; i < n; i++)
+        {
+            for (int j = 1; j <= target; j++)
+            {
+                //第一种情况本身 nums[i]就符合j，单独分出一个子集{j} {其他}
+                if (nums[i] == j)
+                {
+                    dp[i][j] = 1;
+                }
+                else if (dp[i - 1][j] == 1)
+                {
+                    //不取nums[i]
+                    dp[i][j] = 1;
+                }
+                else if (j >= nums[i])
+                {
+                    dp[i][j] = dp[i - 1][j - nums[i]];
+                }
+            }
+        }
+        if (dp[n - 1][target] == 1)
+            return true;
+        else
+            return false;
+    }
+};
+// 494. 目标和
+class Solution
+{
+public:
+    int ans = 0;
+    void dfs(vector<int> &nums, int index, int target)
+    {
+        if (index == nums.size())
+        {
+            if (target == 0)
+            {
+                ans++;
+            }
+            return;
+        }
+        dfs(nums, index + 1, target + nums[index]);
+        dfs(nums, index + 1, target - nums[index]);
+    }
+    int findTargetSumWays(vector<int> &nums, int target)
+    {
+        dfs(nums, 0, target);
+        return ans;
+    }
+
+    int findTargetSumWays2(vector<int> &nums, int target)
+    {
+        int sum = 0;
+        for (int &num : nums)
+        {
+            sum += num;
+        }
+        int diff = sum - target;
+        // neg = (sum - target) / 2
+        if (diff < 0 || diff % 2 != 0)
+        {
+            return 0;
+        }
+        // neg 代表负数和 其中 (sum - neg) - neg= target
+        int neg = diff / 2;
+        // dp[neg] = 代表num[0] + .... num[n] = neg的数量
+        int n = nums.size();
+        vector<vector<int>> dp(n + 1, vector<int>(neg + 1));
+        dp[0][0] = 1;
+        //dp[i][j] 表示在数组 nums的前i个数中选取元素，使得这些元素之和等j的方案数
+        for (int i = 1; i <= n; i++)
+        {
+            int num = nums[i - 1];
+            //枚举当选择前i个数时，和为j的方案数
+            for (int j = 0; j <= neg; j++)
+            {
+                 //如果不选num，上个的方案数量
+                dp[i][j] = dp[i - 1][j];
+                //如果选num 则方案数+dp[i - 1][j - num];
+                if (j >= num)
+                {
+                    dp[i][j] += dp[i - 1][j - num];
+                }
+            }
+        }
+        return dp[n][neg];
     }
 };

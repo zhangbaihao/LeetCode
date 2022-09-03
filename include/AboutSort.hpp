@@ -622,3 +622,23 @@ public:
     }
 };
 
+//406. 根据身高重建队列
+class LT406Solution
+{
+public:
+    vector<vector<int>> reconstructQueue(vector<vector<int>> &people)
+    {
+        vector<vector<int>> res;
+         //身高高的在前面 身高一样时，前面人少的默认在前面
+        sort(people.begin(), people.end(), [](const vector<int> &a, const vector<int> &b)
+        {
+            return a[0] > b[0] || (a[0] == b[0] && a[1] < b[1]); 
+        });
+        for (const vector<int> &person : people)
+        {
+            //前面以高优先整体有序，后面矮的往前插入 依然符合 前面插入的b[1]的规则
+            res.insert(res.begin() + person[1], person);
+        }
+        return res;
+    }
+};

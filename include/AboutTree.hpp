@@ -850,3 +850,29 @@ public:
         return max(f[root], g[root]);
     }
 };
+//437. 路径总和 III
+class LT437Solution {
+public:
+    int res = 0;
+    void dfs(TreeNode *root, long targetSum)
+    {
+        if (!root)
+            return;
+        targetSum -= root->val;
+        if (targetSum == 0)
+        {
+            res++;
+        }
+        dfs(root->left, targetSum);
+        dfs(root->right, targetSum);
+    }
+    int pathSum(TreeNode *root, int targetSum)
+    {
+        if (!root)
+            return 0;
+        dfs(root, targetSum);
+        pathSum(root->left, targetSum);
+        pathSum(root->right, targetSum);
+        return res;
+    }
+};
