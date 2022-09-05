@@ -452,7 +452,7 @@ public:
         return isBalanced(pRoot);
     }
 };
-// LT8 二叉树的下一个结点
+// LT8 二叉树的下一个结点TreeLinkNode
 struct TreeLinkNode
 {
     int val;
@@ -813,5 +813,116 @@ public:
             }
         }
         return root->val;
+    }
+};
+//337. 打家劫舍 III
+class LT337Solution
+{
+public:
+    // f[i]偷i结点价值最大 g[i]代表不偷i结点的价值最大
+    unordered_map<TreeNode *, int> f, g;
+    void dfs(TreeNode *node)
+    {
+        if (!node)
+        {
+            return;
+        }
+        dfs(node->left);
+        dfs(node->right);
+        //偷f[node] 则左右子树不能偷
+        f[node] = node->val + g[node->left] + g[node->right];
+        //不偷g[node] 左+右子树可以偷也可以不偷 取最大值和
+        g[node] = max(f[node->left], g[node->left]) + max(f[node->right], g[node->right]);
+    }
+
+    int rob(TreeNode *root)
+    {
+        dfs(root);
+        return max(f[root], g[root]);
+    }
+};
+//437. 路径总和 III
+class LT437Solution {
+public:
+    int res = 0;
+    void dfs(TreeNode *root, long targetSum)
+    {
+        if (!root)
+            return;
+        targetSum -= root->val;
+        if (targetSum == 0)
+        {
+            res++;
+        }
+        dfs(root->left, targetSum);
+        dfs(root->right, targetSum);
+    }
+    int pathSum(TreeNode *root, int targetSum)
+    {
+        if (!root)
+            return 0;
+        dfs(root, targetSum);
+        pathSum(root->left, targetSum);
+        pathSum(root->right, targetSum);
+        return res;
+    }
+};
+
+// 543. 二叉树的直径
+class LT543Solution
+{
+    int ans = 0;
+    int depth(TreeNode* rt){
+        if (rt == NULL) {
+            return 0; // 访问到空节点了，返回0
+        }
+        int L = depth(rt->left); // 左儿子为根的子树的深度
+        int R = depth(rt->right); // 右儿子为根的子树的深度
+        ans = max(ans, L + R); // 计算d_node即L+R+1 并更新ans
+        return max(L, R) + 1; // 返回该节点为根的子树的深度
+    }
+public:
+    int diameterOfBinaryTree(TreeNode* root) {
+        depth(root);
+        return ans;
+    }
+};
+
+// 617. 合并二叉树
+class LT617Solution
+{
+public:
+    TreeNode *mergeTrees(TreeNode *root1, TreeNode *root2)
+    {
+        if (root1 == nullptr)
+        {
+            return root2;
+        }
+        if (root2 == nullptr)
+        {
+            return root1;
+        }
+        auto merged = new TreeNode(root1->val + root2->val);
+        merged->left = mergeTrees(root1->left, root2->left);
+        merged->right = mergeTrees(root1->right, root2->right);
+        return merged;
+    }
+};
+
+// 538. 把二叉搜索树转换为累加树
+class LT538Solution
+{
+public:
+    int sum = 0;
+    TreeNode *convertBST(TreeNode *root)
+    {
+        if(!root){
+            return nullptr;
+        }
+        convertBST(root->right);
+        sum += root->val;
+        root->val = sum;
+        convertBST(root->left);
+        return root;
     }
 };

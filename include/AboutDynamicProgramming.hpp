@@ -398,14 +398,14 @@ public:
         {
             for (int j = 1; j <= len2; j++)
             {
-                int temp = min(dp[i-1][j]+1,dp[i][j-1]+1);
-                dp[i][j] = min(temp,dp[i-1][j-1]+(word1[i-1] != word2[j-1]));
+                int temp = min(dp[i - 1][j] + 1, dp[i][j - 1] + 1);
+                dp[i][j] = min(temp, dp[i - 1][j - 1] + (word1[i - 1] != word2[j - 1]));
             }
         }
         return dp[len1][len2];
     }
 };
-//121. 买卖股票的最佳时机
+// 121. 买卖股票的最佳时机
 class LT121Solution
 {
 public:
@@ -593,7 +593,7 @@ public:
     }
 };
 
-//152. 乘积最大子数组
+// 152. 乘积最大子数组
 class LT152Solution
 {
 public:
@@ -603,9 +603,9 @@ public:
         for (int i = 1; i < nums.size(); ++i)
         {
             int mx = maxF, mn = minF;
-            //最大三种情况 1.继承前面乘积*当前值>0 2.之前乘积<当前值 3.之前乘积是负数（最小值）*当前值负数 
+            //最大三种情况 1.继承前面乘积*当前值>0 2.之前乘积<当前值 3.之前乘积是负数（最小值）*当前值负数
             maxF = max(mx * nums[i], max(nums[i], mn * nums[i]));
-            //1.计算之前乘积最小值 *当前值 2.当前值最小值 3.当前之前乘积最大值 * 当前值<0
+            // 1.计算之前乘积最小值 *当前值 2.当前值最小值 3.当前之前乘积最大值 * 当前值<0
             minF = min(mn * nums[i], min(nums[i], mx * nums[i]));
             ans = max(maxF, ans);
         }
@@ -618,30 +618,31 @@ class LT198Solution
 public:
     int rob(vector<int> &nums)
     {
-        if (nums.size() == 0){
+        if (nums.size() == 0)
+        {
             return 0;
         }
         if (nums.size() == 1)
         {
             return nums[0];
         }
-        vector<int> dp(nums.size()+1, 0);
+        vector<int> dp(nums.size() + 1, 0);
         dp[1] = nums[0];
         for (int i = 2; i <= nums.size(); i++)
         {
-            dp[i] = max(dp[i - 1], dp[i - 2] + nums[i-1]);
+            dp[i] = max(dp[i - 1], dp[i - 2] + nums[i - 1]);
         }
         return dp[nums.size()];
     }
 };
 
-//279. 完全平方数
+// 279. 完全平方数
 class LT279Solution
 {
 public:
     int numSquares(int n)
     {
-        //f[i] 表示最少需要多少个数的平方来表示整数 i。
+        // f[i] 表示最少需要多少个数的平方来表示整数 i。
         vector<int> f(n + 1);
         for (int i = 1; i <= n; i++)
         {
@@ -653,5 +654,286 @@ public:
             f[i] = minn + 1;
         }
         return f[n];
+    }
+};
+
+// 300. 最长递增子序列
+class LT300Solution
+{
+public:
+    int lengthOfLIS(vector<int> &nums)
+    {
+        int n = nums.size();
+        if (n == 0)
+            return 0;
+        // dp[i] 代表以nums[i]结尾的最长递增子序列的元素个数
+        vector<int> dp(n, 0);
+
+        for (int i = 0; i < n; i++)
+        {
+            dp[i] = 1;
+            for (int j = 0; j < i; j++)
+            { // dp[j]的数量 + 当前的值 构成子序列数量
+                if (nums[j] < nums[i])
+                {
+                    dp[i] = max(dp[i], dp[j] + 1);
+                }
+            }
+        }
+        // dp是一个没有顺序的可能 前一个元素是比较大dp[i-1]=3 后一个以一个很小元素结尾 则dp[i] = 1
+        return *max_element(dp.begin(), dp.end());
+    }
+};
+
+// 309. 最佳买卖股票时机含冷冻期
+class LT309Solution
+{
+public:
+    int maxProfit(vector<int> &prices)
+    {
+        if (prices.empty())
+        {
+            return 0;
+        }
+
+        int n = prices.size();
+        // f[i][0]: 手上持有股票的最大收益
+        // f[i][1]: 手上不持有股票，并且处于冷冻期中的累计最大收益
+        // f[i][2]: 手上不持有股票，并且不在冷冻期中的累计最大收益
+        vector<vector<int>> f(n, vector<int>(3));
+        f[0][0] = -prices[0];
+        for (int i = 1; i < n; ++i)
+        {
+            f[i][0] = max(f[i - 1][0], f[i - 1][2] - prices[i]); //今天买入股票
+            f[i][1] = f[i - 1][0] + prices[i];                   //今天卖出股票
+            f[i][2] = max(f[i - 1][1], f[i - 1][2]);
+        }
+        return max(f[n - 1][1], f[n - 1][2]);
+    }
+};
+
+// 322. 零钱兑换
+class LT322Solution
+{
+public:
+    int coinChange(vector<int> &coins, int amount)
+    {
+        int Max = amount + 1;
+        // dp[i]代表组成i元 需要的硬币最少数量
+        // dp[i-coins[j]]+1
+        vector<int> dp(amount + 1, Max);
+        dp[0] = 0;
+        //从1元开始算起
+        for (int i = 1; i <= amount; ++i)
+        {
+            for (int j = 0; j < (int)coins.size(); ++j)
+            {
+                if (coins[j] <= i)
+                {
+                    dp[i] = min(dp[i], dp[i - coins[j]] + 1);
+                }
+            }
+        }
+        return dp[amount] > amount ? -1 : dp[amount];
+    }
+};
+
+// 338. 比特位计数
+class LT338Solution
+{
+public:
+    vector<int> countBits(int n)
+    {
+        // dp[i] 代表二进制 值i中1的数量
+        vector<int> dp(n + 1);
+        //最高有效位
+        int highBit = 0;
+        for (int i = 1; i <= n; i++)
+        {
+            //枚举i到对应值时更新最高有效位  1 2 4 8 .... 256
+            if ((i & (i - 1)) == 0)
+            {
+                highBit = i;
+            }
+            // dp[15] = dp[15-8] + 1 = dp[7-4] + 2 = dp[3-2] + 3 = dp[1]+4
+            dp[i] = dp[i - highBit] + 1;
+        }
+        return dp;
+    }
+};
+// 416. 分割等和子集
+class LT416Solution
+{
+public:
+    bool canPartition(vector<int> &nums)
+    {
+        int n = nums.size();
+        if (n < 2)
+        {
+            return false;
+        }
+        int sum = accumulate(nums.begin(), nums.end(), 0);
+        //总和为奇数 则两个子集一定不相等
+        if (sum % 2 != 0)
+            return false;
+        //题目指定nums[] >= 1
+        int maxNum = *max_element(nums.begin(), nums.end());
+        //计算每个子集合target
+        int target = sum / 2;
+        if (maxNum > target)
+        {
+            return false;
+        }
+        // dp[i][j]表示下标nums[0]-nums[i]和等于j
+        vector<vector<int>> dp(n, vector<int>(target + 1, 0));
+        for (int i = 0; i < n; i++)
+        {
+            dp[i][0] = true;
+        }
+        //满足本身 {nums[0]} 符合子集1 空{}子集2
+        dp[0][nums[0]] = true;
+        for (int i = 1; i < n; i++)
+        {
+            for (int j = 1; j <= target; j++)
+            {
+                //第一种情况本身 nums[i]就符合j，单独分出一个子集{j} {其他}
+                if (nums[i] == j)
+                {
+                    dp[i][j] = 1;
+                }
+                else if (dp[i - 1][j] == 1)
+                {
+                    //不取nums[i]
+                    dp[i][j] = 1;
+                }
+                else if (j >= nums[i])
+                {
+                    dp[i][j] = dp[i - 1][j - nums[i]];
+                }
+            }
+        }
+        if (dp[n - 1][target] == 1)
+            return true;
+        else
+            return false;
+    }
+};
+// 416. 分割等和子集
+class LT416Solution
+{
+public:
+    bool canPartition(vector<int> &nums)
+    {
+        int n = nums.size();
+        if (n < 2)
+        {
+            return false;
+        }
+        int sum = accumulate(nums.begin(), nums.end(), 0);
+        //总和为奇数 则两个子集一定不相等
+        if (sum % 2 != 0)
+            return false;
+        //题目指定nums[] >= 1
+        int maxNum = *max_element(nums.begin(), nums.end());
+        //计算每个子集合target
+        int target = sum / 2;
+        if (maxNum > target)
+        {
+            return false;
+        }
+        // dp[i][j]表示下标nums[0]-nums[i]和等于j
+        vector<vector<int>> dp(n, vector<int>(target + 1, 0));
+        for (int i = 0; i < n; i++)
+        {
+            dp[i][0] = true;
+        }
+        //满足本身 {nums[0]} 符合子集1 空{}子集2
+        dp[0][nums[0]] = true;
+        for (int i = 1; i < n; i++)
+        {
+            for (int j = 1; j <= target; j++)
+            {
+                //第一种情况本身 nums[i]就符合j，单独分出一个子集{j} {其他}
+                if (nums[i] == j)
+                {
+                    dp[i][j] = 1;
+                }
+                else if (dp[i - 1][j] == 1)
+                {
+                    //不取nums[i]
+                    dp[i][j] = 1;
+                }
+                else if (j >= nums[i])
+                {
+                    dp[i][j] = dp[i - 1][j - nums[i]];
+                }
+            }
+        }
+        if (dp[n - 1][target] == 1)
+            return true;
+        else
+            return false;
+    }
+};
+// 494. 目标和
+class Solution
+{
+public:
+    int ans = 0;
+    void dfs(vector<int> &nums, int index, int target)
+    {
+        if (index == nums.size())
+        {
+            if (target == 0)
+            {
+                ans++;
+            }
+            return;
+        }
+        dfs(nums, index + 1, target + nums[index]);
+        dfs(nums, index + 1, target - nums[index]);
+    }
+    int findTargetSumWays(vector<int> &nums, int target)
+    {
+        dfs(nums, 0, target);
+        return ans;
+    }
+
+    int findTargetSumWays2(vector<int> &nums, int target)
+    {
+        int sum = 0;
+        for (int &num : nums)
+        {
+            sum += num;
+        }
+        int diff = sum - target;
+        // neg = (sum - target) / 2
+        if (diff < 0 || diff % 2 != 0)
+        {
+            return 0;
+        }
+        // neg 代表负数和 其中 (sum - neg) - neg= target
+        int neg = diff / 2;
+        // dp[neg] = 代表num[0] + .... num[n] = neg的数量
+        int n = nums.size();
+        vector<vector<int>> dp(n + 1, vector<int>(neg + 1));
+        dp[0][0] = 1;
+        //dp[i][j] 表示在数组 nums的前i个数中选取元素，使得这些元素之和等j的方案数
+        for (int i = 1; i <= n; i++)
+        {
+            int num = nums[i - 1];
+            //枚举当选择前i个数时，和为j的方案数
+            for (int j = 0; j <= neg; j++)
+            {
+                 //如果不选num，上个的方案数量
+                dp[i][j] = dp[i - 1][j];
+                //如果选num 则方案数+dp[i - 1][j - num];
+                if (j >= num)
+                {
+                    dp[i][j] += dp[i - 1][j - num];
+                }
+            }
+        }
+        return dp[n][neg];
     }
 };

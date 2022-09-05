@@ -433,77 +433,83 @@ public:
         return ret;
     }
 };
-/*
-他们的最大值分别为{4,4,6,6,6,5};
-针对数组{2,3,4,2,6,2,5,1}的滑动窗口有以下6个：
-{[2,3,4],2,6,2,5,1},
-{2,[3,4,2],6,2,5,1},
-{2,3,[4,2,6],2,5,1},
-{2,3,4,[2,6,2],5,1},
-{2,3,4,2,[6,2,5],1},
-{2,3,4,2,6,[2,5,1]}。
-*/
-class LT59Solution
+
+
+//394. 字符串解码
+class LT394Solution
 {
 public:
-    vector<int> maxInWindows(const vector<int> &nums, int size)
+    //计算栈中字符组成的 乘积数 10[abc] 这里的10
+    int calculateTheMultiplier(stack<char> &st)
     {
-        vector<int> ret;
-        if (nums.size() == 0 || size < 1 || nums.size() < size)
-            return ret;
-        int n = nums.size();
-        //用来存储vector中的下标，其中front代表滑动窗口最大值，
-        deque<int> dq;
-        for (int i = 0; i < n; ++i)
+        int number = 0;
+        string str = "";
+        while (!st.empty())
         {
-            /*
-            如果arr[i+1] > arr[i], 那么还要arr[i]有什么用.
-            如果arr[i+1] < arr[i],显然arr[i]还是需要保留的。
-            */
-            while (!dq.empty() && nums[dq.back()] < nums[i])
+            char c = st.top();
+            if (c <= '9' && c >= '0')
             {
-                dq.pop_back();
+                str = c + str;
+                st.pop();
             }
-            dq.push_back(i);
-            // 判断队列的头部的下标是否过期
-            if (dq.front() + size <= i)
+            else
             {
-                dq.pop_front();
-            }
-            // 判断是否形成了窗口
-            if (i + 1 >= size)
-            {
-                ret.push_back(nums[dq.front()]);
+                break;
             }
         }
-        return ret;
+        if (str != "")
+        {
+            number = atoi(str.c_str());
+        }
+        return number;
     }
-};
-//239. 滑动窗口最大值
-class LT239Solution {
-public:
-    vector<int> maxSlidingWindow(vector<int> &nums, int k)
+    string decodeString(string s)
     {
-        vector<int> ans;
-        deque<int> m_deque;
-        int n = nums.size();
-        int maxValue = 0;
-        for (int i = 0; i < n; i++)
+        stack<char> st;
+        string res = "";
+        for (auto v : s)
         {
-            while (!m_deque.empty() && nums[m_deque.back()] < nums[i])
+            if (v == ']')
             {
-                //新来的比前一个都大，前一个可以不要了
-                m_deque.pop_back();
+                string temp = "";
+                //将[] 中的字符合并字符串
+                while (!st.empty() && st.top() != '[')
+                {
+                    char c = st.top();
+                    if (c >= 'a' && c <= 'z')
+                    {
+                        temp = st.top() + temp;
+                        st.pop();
+                    }
+                }
+                //弹出'['
+                st.pop();
+                int number = calculateTheMultiplier(st);
+                for (int i = 0; i < number; i++)
+                {
+                    //栈空 即可直接+到结果中
+                    if (st.empty())
+                    {
+                        res = res + temp;
+                    }else{
+                        //2[2[ab]] -> 将2[ab]转成abab入栈
+                        for(auto c : temp)
+                            st.push(c);
+                    }
+                }        
             }
-            m_deque.push_back(i);
-            // front是当前最大的，如果过期则抛弃
-            if (m_deque.front() + k <= i)
-            {
-                m_deque.pop_front();
+            else
+            {   //栈空 即可直接+ res到结果中
+                if (v >= 'a' && v <= 'z' && st.empty())
+                {
+                    res += v;
+                }
+                else
+                {
+                    st.push(v);
+                }
             }
-            if (i + 1 >= k)
-                ans.push_back(nums[m_deque.front()]);
         }
-        return ans;
+        return res;
     }
 };

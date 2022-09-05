@@ -189,3 +189,20 @@ public:
         return n;
     }
 };
+
+//461. 汉明距离
+class LT461Solution {
+public:
+    int hammingDistance(int x, int y)
+    {
+        int s = x ^ y;//进行异或
+        int ret = 0;
+        //统计1的个数
+        while (s)
+        {
+            ret += s & 1;
+            s = s >> 1;
+        }
+        return ret;
+    }
+};

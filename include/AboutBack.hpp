@@ -357,3 +357,76 @@ public:
         return count;
     }
 };
+// 301. 删除无效的括号
+class LT301Solution
+{
+private:
+    vector<string> ret;
+    bool isValid(string s)
+    {
+        int leftCount = 0;
+        for (auto c : s)
+        {
+            if (c == '(')
+                leftCount++;
+            else if (c == ')')
+            {
+                leftCount--;
+                if (leftCount < 0)
+                    return false;
+            }
+        }
+        return leftCount == 0;
+    }
+    void dfs(string s, int index, int lMin, int rMin)
+    {
+        //多余括号去除
+        if (lMin == 0 && rMin == 0)
+        {
+            //合法加入
+            if (isValid(s))
+                ret.push_back(s);
+            return;
+        }
+        for (int i = index; i < s.size(); i++)
+        {
+            //剪枝：去除重复答案：回溯时跳过连续的括号 (((() 这种去掉第二个( 当前字符((()， 当前轮次for循环没必要去掉第三个(再试一次
+            if (i != index && s[i] == s[i - 1])
+                continue;
+            //剪枝：当所有需要去除的括号数量大于剩余的字符串数量时，直接return
+            if (lMin + rMin > s.size() - i)
+                return;
+            //利用substr删除第 i个字符，i会自动指向下个字符的索引
+            if (lMin > 0 && s[i] == '(')
+                dfs(s.substr(0, i) + s.substr(i + 1), i, lMin - 1, rMin);
+            if (rMin > 0 && s[i] == ')')
+                dfs(s.substr(0, i) + s.substr(i + 1), i, lMin, rMin - 1);
+        }
+    }
+public:
+    vector<string> removeInvalidParentheses(string s)
+    {
+        // lMin 代表(多出的数量 RMin代表)多出的数量
+        int lMin = 0, rMin = 0;
+        for (auto c : s)
+        {
+            if (c == '(')
+            {
+                lMin++;
+            }
+            else if (c == ')')
+            {
+                if (lMin == 0)
+                {
+                    rMin++;
+                }
+                else
+                {
+                    lMin--;
+                }
+            }
+        }
+        dfs(s, 0, lMin, rMin);
+        return ret;
+    }
+};

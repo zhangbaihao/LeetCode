@@ -612,22 +612,28 @@ public:
         return 0;
     }
 };
-//240. 搜索二维矩阵 II
-class LT240Solution {
+
+//448. 找到所有数组中消失的数字
+class LT448Solution {
 public:
-    bool searchMatrix(vector<vector<int>>& matrix, int target) {
-        int rows = matrix.size();
-        int cols = matrix[0].size();
-        int row = rows - 1, col = 0;
-        while (col < cols && row >= 0)
+    vector<int> findDisappearedNumbers(vector<int> &nums)
+    {
+        int n = nums.size();
+        //用nums存下 当nums[i]的值是在 1-n范围，则让nums[nums[i]] + n这样一定>n
+        for (auto &num : nums)
         {
-            if (matrix[row][col] == target)
-                return true;
-            else if (matrix[row][col] > target)
-                row--;
-            else
-                col++;
+            int x = (num - 1) % n;
+            nums[x] += n;
         }
-        return false;
+        vector<int> ret;
+        //若nums[i]<=n则说明，i+1这个值没出现过
+        for (int i = 0; i < n; i++)
+        {
+            if (nums[i] <= n)
+            {
+                ret.push_back(i + 1);
+            }
+        }
+        return ret;
     }
 };
