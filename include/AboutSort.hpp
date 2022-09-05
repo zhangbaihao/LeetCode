@@ -301,7 +301,7 @@ public:
         int longestStreak = 0;
 
         for (const int &num : num_set)
-        {   // 跳过3 7 4 5 6  4567的计算
+        { // 跳过3 7 4 5 6  4567的计算
             if (!num_set.count(num - 1))
             {
                 int currentNum = num;
@@ -319,7 +319,7 @@ public:
         return longestStreak;
     }
 };
-//238. 除自身以外数组的乘积
+// 238. 除自身以外数组的乘积
 class LT238Solution
 {
 public:
@@ -558,6 +558,119 @@ public:
         }
     }
 };
+
+// 283. 移动零
+class LT283Solution
+{
+public:
+    void moveZeroes(vector<int> &nums)
+    {
+        vector<int> temp(nums.size(), 0);
+        int j = 0;
+        for (int i = 0; i < nums.size(); i++)
+        {
+            if (nums[i] != 0)
+            {
+                temp[j++] = nums[i];
+            }
+        }
+        std::swap(nums, temp);
+    }
+};
+
+//基本排序算法
+class AoubtBaseSortSolution
+{
+public:
+    //希尔排序 根据gap跨度分组 O(n^1.3) 不稳定 内排序
+    void shellSort(int *data, int length)
+    {
+        // 分组每次取一半，最后到两重复上述步骤 直到gap=1 （gap=1其实就是完全的插入排序）
+        // 3 ... 1 ... 4一定是 3 1和先比较 后面 3 4 再比较
+        for (int gap = length / 2; gap >= 1; gap /= 2)
+        {
+            for (int i = gap; i < length; i++)
+            {
+                int temp = data[i]; //保存当前需要调整的值
+                int j = i - gap;    //取组内的前一个元素
+                // 每组遍历
+                while (j >= 0 && temp < data[j])
+                {
+                    //组内排序 类似插入一样，前面有序整体后移
+                    data[j + gap] = data[j];
+                    j = j - gap;
+                }
+                //将temp插入合适位置
+                data[j + gap] = temp;
+            }
+        }
+    }
+    //快速排序 O(nlogn) 不稳定 调用(data,0,n-1)
+    void quickSort(int *data, int left, int right)
+    {
+        int i = left;
+        int j = right;
+        int temp = data[(i + j) / 2]; //基数取中
+        while (i <= j)
+        {
+            while (data[i] < temp) //找到比基数大时i停止
+                i++;
+            while (data[j] > temp) //找到比基数小时j停止
+                j--;
+            if (i <= j) //满足条件交换
+            {
+                if (i != j)
+                    swap(data[i], data[j]);
+                i++;
+                j--;
+            }
+        }
+        if (left < j) // j在left右边，需要处理基数左边的序列
+            quickSort(data, left, j);
+        if (i < right) // i在right左边，需要处理基数右边的序列
+            quickSort(data, i, right);
+    }
+    //合并操作
+    void merge(int arr[], int left, int mid, int right, int temp[])
+    {
+        int i = left;    //左序列指针
+        int j = mid + 1; //右序列指针
+        int t = 0;       //临时数组指针
+        while (i <= mid && j <= right)
+        {
+            if (arr[i] <= arr[j])
+                temp[t++] = arr[i++];
+            else
+                temp[t++] = arr[j++];
+        }
+        while (i <= mid)
+        { //将左边剩余元素填充进temp中
+            temp[t++] = arr[i++];
+        }
+        while (j <= right)
+        { //将右序列剩余元素填充进temp中
+            temp[t++] = arr[j++];
+        }
+        t = 0;
+        //将temp中的元素全部拷贝到原数组中
+        while (left <= right)
+        {
+            arr[left++] = temp[t++];
+        }
+    }
+     //归并排序 O(nlogn) 稳定 temp排序内辅助空间与arr大小相同
+    void mergeSort(int arr[], int left, int right, int temp[])
+    {
+        if (left < right)
+        {
+            int mid = (left + right) / 2;
+            mergeSort(arr, left, mid, temp);      //左边归并排序，使得左子序列有序
+            mergeSort(arr, mid + 1, right, temp); //右边归并排序，使得右子序列有序
+            merge(arr, left, mid, right, temp);   //将两个有序子数组合并操作
+        }
+    }
+};
+
 //堆排序
 class HeapSortSolution
 {
@@ -601,23 +714,5 @@ class HeapSortSolution
             swap(nums.front(), nums[n - i - 1]);
             heapify(nums, n - i - 1, 0);
         }
-    }
-};
-//283. 移动零
-class LT283Solution
-{
-public:
-    void moveZeroes(vector<int> &nums)
-    {
-        vector<int> temp(nums.size(), 0);
-        int j = 0;
-        for (int i = 0; i < nums.size(); i++)
-        {
-            if (nums[i] != 0)
-            {
-                temp[j++] = nums[i];
-            }
-        }
-        std::swap(nums, temp);
     }
 };
