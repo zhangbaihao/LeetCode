@@ -11,10 +11,10 @@
 #include "AboutTree.hpp"
 using namespace std;
 
+
 int main()
 {
     cout << "---Solution Call---" << endl;
-    Solution test;
 
     return 0;
 }

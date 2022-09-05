@@ -5,6 +5,9 @@ struct ListNode
 {
     int val;
     struct ListNode *next;
+    ListNode(){
+        next = nullptr;
+    }
     ListNode(int x) : val(x), next(NULL)
     {
     }

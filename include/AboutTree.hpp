@@ -58,24 +58,12 @@ public:
         }
     }
 };
-// LT55 二叉树的深度
-class LT55Solution
-{
-public:
-    int TreeDepth(TreeNode *pRoot)
-    {
-        if (!pRoot)
-            return 0;
-        int lval = TreeDepth(pRoot->left);
-        int rval = TreeDepth(pRoot->right);
-        return max(lval, rval) + 1;
-    }
-};
+
 // 96. 不同的二叉搜索树
 class LT096Solution
 {
     /*
-    dp[i] = i个不同的数组成的二叉搜索数的个数
+    dp[i] = i个不同的结点 组成的二叉搜索数的个数 节点值从 1 到 n 
     假设 i = 5
     当根节点等于 1 时 ，其余数字都比1大，只能在右边 dp[i] += dp[4]
     当根节点等于 2 时，左边有一个1比2小，右边有三个比2大的数字 dp[i] += dp[1] * dp[3]
@@ -93,7 +81,7 @@ public:
         { //以j值为根结点，总dp[i] 左子树只有dp[j-1]种 *右子树dp[i-j]
             for (int j = 1; j <= i; j++)
             {
-                int leftNum = dp[j - 1];
+                int leftNum = dp[j - 1];//节点值从 1 到 n  古比他小的数只有j-1
                 int rightNum = dp[i - j];
                 dp[i] += leftNum * rightNum;
             }
@@ -169,8 +157,8 @@ public:
         return ans;
     }
 };
-// 104. 二叉树的最大深度
 
+// 104. 二叉树的最大深度
 class LT104Solution
 {
 public:
@@ -193,9 +181,10 @@ public:
             return nullptr;
         TreeNode *root = new TreeNode(preorder[0]);
         int mid = distance(inorder.begin(), find(inorder.begin(), inorder.end(), preorder[0]));
+        //以中序遍历 mid为根节点，递归左子树 和 右子树
         vector<int> preorder_left(preorder.begin() + 1, preorder.begin() + 1 + mid);
-        vector<int> preorder_right(preorder.begin() + 1 + mid, preorder.end());
         vector<int> inorder_left(inorder.begin(), inorder.begin() + mid);
+        vector<int> preorder_right(preorder.begin() + 1 + mid, preorder.end());
         vector<int> inorder_right(inorder.begin() + mid + 1, inorder.end());
         root->left = buildTree(preorder_left, inorder_left);
         root->right = buildTree(preorder_right, inorder_right);
@@ -396,28 +385,30 @@ public:
 class LT36Solution
 {
 public:
+    //将二叉搜索树 按中序遍历 转成双向链表 left指上一个结点，rigth指向下个结点
     TreeNode *Convert(TreeNode *pRootOfTree)
     {
         if (!pRootOfTree)
             return nullptr;
         stack<TreeNode *> st;
         TreeNode *head = nullptr;
+        //上个结点
         TreeNode *pre = nullptr;
         while (!st.empty() || pRootOfTree)
         {
-            //优先访问左子树，其他先存栈
+            //当结点存在 优先访问左子树，其他先存栈
             while (pRootOfTree && pRootOfTree->left)
             {
                 st.push(pRootOfTree);
                 pRootOfTree = pRootOfTree->left;
             }
-            //当前结点左子树 自己 右子树均访问结束，往上走
+            //当前结点左子树入栈结束，往上走
             if (!pRootOfTree && !st.empty())
             {
                 pRootOfTree = st.top();
                 st.pop();
             }
-            //第一次出栈pre还未赋值
+            //第一次出栈pre还未赋值 确定头节点
             if (!pre)
             {
                 head = pRootOfTree;
