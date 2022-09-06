@@ -590,15 +590,14 @@ public:
         return slow;
     }
 };
-// LT35 复杂链表的复制
+
 struct RandomListNode
 {
     int label;
     struct RandomListNode *next, *random;
-    RandomListNode(int x) : label(x), next(NULL), random(NULL)
-    {
-    }
+    RandomListNode(int x) : label(x), next(NULL), random(NULL){}
 };
+// LT35 复杂链表的复制
 class LT35Solution
 {
 public:
@@ -757,6 +756,7 @@ public:
 class LT287Solution
 {
 public:
+    //有环
     int findDuplicate(vector<int> &nums)
     {
         int slow = 0, fast = 0;

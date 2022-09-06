@@ -56,7 +56,7 @@ public:
         }
         return result;
     }
-    double Power(double base, int exponent)
+    double Power2(double base, int exponent)
     {
         //处理负数次方
         if (exponent < 0)
@@ -147,31 +147,6 @@ public:
         //交换结果集
         if (ans[0] > ans[1])
             swap(ans[0], ans[1]);
-        return ans;
-    }
-    vector<int> FindNumsAppearOnc2(vector<int> &array)
-    {
-        //答案数组
-        vector<int> ans(2);
-        int x = 0;
-        //只剩下两个出现一次数的异或结果x
-        for (auto i : array)
-        {
-            x ^= i;
-        }
-        int m = 1;
-        while (!(m & x))
-        {
-            m <<= 1;
-        }
-        for (auto i : array)
-        {
-            if(m & i){
-                ans[0] ^= i;
-            }else{
-                ans[1] ^= i;
-            }
-        }
         return ans;
     }
 };
