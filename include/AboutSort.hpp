@@ -518,7 +518,7 @@ public:
         }
     }
 };
-
+// 4. 寻找两个正序数组的中位数
 class LT004Solution
 {
 public:
@@ -578,6 +578,67 @@ public:
     }
 };
 
+// 581. 最短无序连续子数组
+class LT581Solution
+{
+public:
+    int findUnsortedSubarray(vector<int> &nums)
+    {
+        vector<int> temp(nums);
+        sort(temp.begin(), temp.end());
+        int n = nums.size();
+        int start = 0;
+        //找到第一个不对的i
+        for (int i = 0; i < n; i++)
+        {
+            if (nums[i] != temp[i])
+            {
+                start = i;
+                break;
+            }
+        }
+        //从后往前找第一个不符合升序的下标
+        int end = -1;
+        for (int i = n - 1; i >= 0; i--)
+        {
+            if (nums[i] != temp[i])
+            {
+                end = i;
+                break;
+            }
+        }
+        return end - start + 1;
+    }
+};
+// 621. 任务调度器
+class LT621Solution
+{
+public:
+    int leastInterval(vector<char> &tasks, int n)
+    {
+        int len = tasks.size();
+        vector<int> vec(26);
+        //统计每个任务的数量
+        for (char c : tasks)
+            ++vec[c - 'A'];
+
+        //按照任务数量从大到小
+        sort(vec.begin(), vec.end(), [](int &x, int &y)
+             { return x > y; });
+
+        //找到和最大任务数量一样大的 任务项数量 A:6 B:6 C:5 则cnt = 2
+        int cnt = 1;
+        while (cnt < vec.size() && vec[cnt] == vec[0])
+            cnt++;
+        // n=3 分两种情况
+        // 1.没有空闲时间则len                2.含有空闲时间X
+        // A B C F                           A B C X
+        // A B C F                           A B C X
+        // A B C                             A B C
+        // n+1个桶 vec[0]-1代表 最后一行任务数不一定满，加cnt最后一行任务数
+        return max(len, cnt + (n + 1) * (vec[0] - 1));
+    }
+};
 //基本排序算法
 class AoubtBaseSortSolution
 {
@@ -658,7 +719,7 @@ public:
             arr[left++] = temp[t++];
         }
     }
-     //归并排序 O(nlogn) 稳定 temp排序内辅助空间与arr大小相同
+    //归并排序 O(nlogn) 稳定 temp排序内辅助空间与arr大小相同
     void mergeSort(int arr[], int left, int right, int temp[])
     {
         if (left < right)

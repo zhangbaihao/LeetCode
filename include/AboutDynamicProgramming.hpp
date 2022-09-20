@@ -820,7 +820,7 @@ public:
 };
 
 // 494. 目标和
-class Solution
+class LT494Solution
 {
 public:
     int ans = 0;
