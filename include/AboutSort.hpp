@@ -45,7 +45,36 @@ public:
         return res;
     }
 };
-
+// 26. 删除有序数组中的重复项
+class LT026Solution
+{
+public:
+    int removeDuplicates(vector<int> &nums)
+    {
+        sort(nums.begin(), nums.end());
+        int count = 0;//删除的重复元素数量
+        for (int i = 0; i < nums.size() - 1; ++i)
+        {
+            for (int j = count + i + 1; j < nums.size(); ++j)
+            {
+                if (nums[i] == nums[j])
+                {
+                    count++;
+                }
+                else
+                {
+                    if (j != i + 1)
+                    {
+                        nums[i + 1] = nums[j];
+                    }
+                    break;
+                }
+            }
+        }
+        nums.erase(nums.begin() + nums.size() - count, nums.end());
+        return nums.size();
+    }
+};
 // 31. 下一个排列
 class LT031Solution
 {

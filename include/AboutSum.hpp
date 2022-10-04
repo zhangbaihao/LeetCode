@@ -1,4 +1,122 @@
 ﻿#include "Util.h"
+//16. 最接近的三数之和
+class LT016Solution
+{
+public:
+    int threeSumClosest(vector<int> &nums, int target)
+    {
+        int n = nums.size();
+        sort(nums.begin(), nums.end());
+        int ans = nums[0] + nums[1] + nums[2];
+        for (int i = 0; i < n; ++i)
+        {
+            int start = i + 1, end = n - 1;
+            while (start < end)
+            {
+                int sum = nums[i] + nums[start] + nums[end];
+                if (abs(target - sum) < abs(target - ans))
+                {
+                    ans = sum;
+                }
+
+                if (sum > target)
+                {
+                    end--;
+                }
+                else if (sum < target)
+                {
+                    start++;
+                }
+                else
+                {
+                    //合位target则直接返回target
+                    return ans;
+                }
+            }
+        }
+        return ans;
+    }
+};
+// 18. 四数之和
+class LT018Solution
+{
+public:
+    vector<vector<int>> fourSum(vector<int> &nums, int target)
+    {
+        vector<vector<int>> res;
+
+        int n = nums.size();
+        if (n < 4)
+        {
+            return res;
+        }
+        sort(nums.begin(), nums.end());
+        for (int i = 0; i < n - 3; ++i)
+        {
+            //跳过重复的第一个数字
+            if (i > 0 && nums[i] == nums[i - 1])
+            {
+                continue;
+            }
+            if ((long)nums[i] + nums[i + 1] + nums[i + 2] + nums[i + 3] > target)
+            {
+                break;
+            }
+            if ((long)nums[i] + nums[n - 3] + nums[n - 2] + nums[n - 1] < target)
+            {
+                continue;
+            }
+            long temp1 = target - nums[i];
+            for (int j = i + 1; j < n - 2; ++j)
+            {
+                //跳过重复的第二个数字
+                if (j > i + 1 && nums[j] == nums[j - 1])
+                {
+                    continue;
+                }
+
+                if ((long)nums[i] + nums[j] + nums[j + 1] + nums[j + 2] > target)
+                {
+                    break;
+                }
+                if ((long)nums[i] + nums[j] + nums[n - 2] + nums[n - 1] < target)
+                {
+                    continue;
+                }
+                long temp2 = temp1 - nums[j];
+                int left = j + 1;
+                int right = n - 1;
+                while (left < right)
+                {
+                    long sum = nums[left] + nums[right];
+                    if (sum > temp2)
+                    {
+                        right--;
+                    }
+                    else if (sum < temp2)
+                    {
+                        left++;
+                    }
+                    else if (sum == temp2)
+                    {
+                        res.push_back({nums[i], nums[j], nums[left], nums[right]});
+                        while (left < right && nums[left] == nums[left + 1])
+                        {
+                            left++;
+                        }
+                        left++;
+                        while (left < right && nums[right] == nums[right - 1])
+                        {
+                            right--;
+                        }
+                        right--;
+                    }
+                }
+            }
+        }
+        return res;
+    }
+};
 // 560. 和为 K 的子数组
 class LT560Solution
 {
