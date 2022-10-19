@@ -229,3 +229,61 @@ public:
         return flag && (index == n);
     }
 };
+//36. 有效的数独
+class LT036Solution
+{
+public:
+    bool isValidSudoku(vector<vector<char>> &board)
+    {
+        unordered_map<int, int> m;
+        //行检测
+        for (int i = 0; i < 9; ++i)
+        {
+            m.clear();
+            for (int j = 0; j < 9; ++j)
+            {
+                char c = board[i][j];
+                if (c != '.')
+                    m[c]++;
+                if (m[c] > 1)
+                    return false;
+            }
+        }
+        //列检测
+        for (int i = 0; i < 9; ++i)
+        {
+            m.clear();
+            for (int j = 0; j < 9; ++j)
+            {
+                char c = board[j][i];
+                if (c != '.')
+                    m[c]++;
+                if (m[c] > 1)
+                    return false;
+            }
+        }
+        //分为9个3*3矩阵检测
+        for (int y = 0; y < 3; y++)
+        {
+            for (int x = 0; x < 3; x++)
+            {
+                // 3*3矩阵
+                m.clear();
+                int ioffset = x * 3;
+                int joffset = y * 3;
+                for (int i = 0; i < 3; ++i)
+                {
+                    for (int j = 0; j < 3; ++j)
+                    {
+                        char c = board[i + ioffset][j + joffset];
+                        if (c != '.')
+                            m[c]++;
+                        if (m[c] > 1)
+                            return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+};

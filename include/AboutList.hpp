@@ -11,6 +11,7 @@ struct ListNode
     ListNode(int x) : val(x), next(NULL)
     {
     }
+    ListNode(int x, ListNode *next) : val(x), next(next) {}
 };
 void printList(ListNode *head)
 {
@@ -186,7 +187,26 @@ public:
         return head->next;
     }
 };
-
+//24. 两两交换链表中的节点
+class LT024Solution
+{
+public:
+    ListNode *swapPairs(ListNode *head)
+    {
+        if (!head || !head->next)
+            return head;
+        ListNode *cur = head;
+        //1234分配一个结点 指向2
+        ListNode *newHead = new ListNode(0, cur->next);
+        //1指向3
+        cur->next = newHead->next->next;
+        //2指向1
+        newHead->next->next = cur;
+        //21->34
+        head->next = swapPairs(cur->next);
+        return newHead->next;
+    }
+};
 // LT6 从尾到头打印链表
 //输入一个链表的头节点，按链表从尾到头的顺序返回每个节点的值
 class LT6Solution
@@ -225,6 +245,41 @@ public:
             b = c;
         }
         return a;
+    }
+};
+//25. K 个一组翻转链表
+class LT025Solution
+{
+public:
+    ListNode *reverseKGroup(ListNode *head, int k)
+    {
+        ListNode *cur = head;
+        //检测剩余结点数量是否需要翻转
+        int count = 0;
+        while (cur)
+        {
+            cur = cur->next;
+            count++;
+        }
+        if (count < k)
+        {
+            return head;
+        }
+        //头插法
+        ListNode tHead;
+        cur = head;
+        //123 其中1会成为结尾
+        //翻转k个结点
+        for (int j = 0; j < k; j++)
+        {   //保存临时下一个结点
+            ListNode *temp = cur->next;
+            cur->next = tHead.next;
+            tHead.next = cur;
+            cur = temp;
+        }
+        //结尾指向下一段翻转
+        head->next = reverseKGroup(cur,k);
+        return tHead.next;
     }
 };
 // LT25 合并两个排序的链表

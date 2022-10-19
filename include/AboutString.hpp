@@ -177,7 +177,7 @@ public:
         return str;
     }
 };
-//13. 罗马数字转整数
+// 13. 罗马数字转整数
 class LT013Solution
 {
 private:
@@ -243,7 +243,7 @@ public:
         return res;
     }
 };
-//28. 找出字符串中第一个匹配项的下标
+// 28. 找出字符串中第一个匹配项的下标
 class LT028Solution
 {
 public:
@@ -265,7 +265,7 @@ public:
         }
         return -1;
     }
-    //KMP
+    // KMP
     int strStr2(string haystack, string needle)
     {
         int n = haystack.size(), m = needle.size();
@@ -274,19 +274,19 @@ public:
             return 0;
         }
         vector<int> next(m);
-        
+
         //通过needle字符串计算next数组
         for (int i = 1, j = 0; i < m; i++)
         {
-            //ababc->00120
-            //  j=2 -> j=0
-            //ababc -> ababc
-            //    i=4 计算c字符时
+            // ababc->00120
+            //   j=2 -> j=0
+            // ababc -> ababc
+            //     i=4 计算c字符时
             while (j > 0 && needle[i] != needle[j])
             {
                 j = next[j - 1];
             }
-            //0-j位置是匹配的 从下个位置开始
+            // 0-j位置是匹配的 从下个位置开始
             if (needle[i] == needle[j])
             {
                 j++;
@@ -310,6 +310,36 @@ public:
             }
         }
         return -1;
+    }
+};
+//38. 外观数列
+class LT038Solution {
+public:
+    string countAndSay(int n)
+    {
+        string prev = "1";
+        //n=2  n=3 n=4   n=5
+        //11   21  1211  111221
+        for (int i = 2; i <= n; ++i)
+        {
+            string curr = "";
+            int start = 0;
+            int pos = 0;
+
+            while (pos < prev.size())
+            {
+                //找到第一个与前面字符不一样的如1112的2->312
+                while (pos < prev.size() && prev[pos] == prev[start])
+                {
+                    pos++;
+                }
+                curr += to_string(pos - start) + prev[start];
+                start = pos;
+            }
+            prev = curr;
+        }
+
+        return prev;
     }
 };
 // 647. 回文子串

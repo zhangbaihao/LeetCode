@@ -18,79 +18,48 @@
 #include "AboutStack.hpp"
 #include "AboutTree.hpp"
 #include "AboutSum.hpp"
-//28. 找出字符串中第一个匹配项的下标
-class LT028Solution
+//44. 通配符匹配
+class LT044Solution
 {
 public:
-    int strStr(string haystack, string needle)
+    bool isMatch(string s, string p)
     {
-        if (needle.size() > haystack.size())
-            return -1;
-        for (int i = 0; i <= haystack.length() - needle.length(); i++)
+        int m = s.size();
+        int n = p.size();
+        vector<vector<int>> dp(m + 1, vector<int>(n + 1));
+        dp[0][0] = true;
+        for (int i = 1; i <= n; ++i)
         {
-            int j = 0;
-            int temp = i;
-            while (haystack[temp] == needle[j])
+            if (p[i - 1] == '*')
             {
-                temp++;
-                j++;
-                if (j == needle.length())
-                    return i;
+                dp[0][i] = true;
+            }
+            else
+            {
+                break;
             }
         }
-        return -1;
-    }
-    //KMP
-    int strStr2(string haystack, string needle)
-    {
-        int n = haystack.size(), m = needle.size();
-        if (m == 0)
+        for (int i = 1; i <= m; ++i)
         {
-            return 0;
-        }
-        vector<int> next(m);
-        
-        //通过needle字符串计算next数组
-        for (int i = 1, j = 0; i < m; i++)
-        {
-            //ababc->00120
-            //  j=2 -> j=0
-            //ababc -> ababc
-            //    i=4 计算c字符时
-            while (j > 0 && needle[i] != needle[j])
+            for (int j = 1; j <= n; ++j)
             {
-                j = next[j - 1];
-            }
-            //0-j位置是匹配的 从下个位置开始
-            if (needle[i] == needle[j])
-            {
-                j++;
-            }
-            next[i] = j;
-        }
-        //在i一直前进的情况，匹配ababc 如匹配到c不对 可以直接j回到第二个ab 的a
-        for (int i = 0, j = 0; i < n; i++)
-        {
-            while (j > 0 && haystack[i] != needle[j])
-            {
-                j = next[j - 1];
-            }
-            if (haystack[i] == needle[j])
-            {
-                j++;
-            }
-            if (j == m)
-            {
-                return i - m + 1;
+                if (p[j - 1] == '*')
+                {
+                    dp[i][j] = dp[i][j - 1] | dp[i - 1][j];
+                }
+                else if (p[j - 1] == '?' || s[i - 1] == p[j - 1])
+                {
+                    dp[i][j] = dp[i - 1][j - 1];
+                }
             }
         }
-        return -1;
+        return dp[m][n];
     }
 };
+
 int main()
 {
     Solution s;
-    s.strStr2("abababbcccc", "abababc");
 
     cout << "---Solution Call---" << endl;
     return 0;
