@@ -637,3 +637,60 @@ public:
         return ret;
     }
 };
+// 50. Pow(x, n)
+class LT050Solution
+{
+public:
+    double quickMul(double x, long long N)
+    {
+        if (N == 0)
+        {
+            return 1.0;
+        }
+        double y = quickMul(x, N / 2);
+        return N % 2 == 0 ? y * y : y * y * x;
+    }
+    double myPow(double x, int n)
+    {
+        if (n == 0)
+            return 1;
+        double ans = 1;
+        long long N = n;
+        if (n > 0)
+        {
+            ans = quickMul(x, N);
+        }
+        else
+        {
+            ans = quickMul(x, -N);
+        }
+        return N > 0 ? ans : 1.0 / ans;
+    }
+};
+// 66. 加一
+class LT066Solution
+{
+public:
+    vector<int> plusOne(vector<int> &digits)
+    {
+        int n = digits.size();
+        for (int i = n - 1; i >= 0; --i)
+        {
+            //1999  -> 1+1 000
+            if (digits[i] != 9)
+            {
+                ++digits[i];
+                for (int j = i + 1; j < n; ++j)
+                {
+                    digits[j] = 0;
+                }
+                return digits;
+            }
+        }
+
+        // digits 中所有的元素均为 9
+        vector<int> ans(n + 1);
+        ans[0] = 1;
+        return ans;
+    }
+};

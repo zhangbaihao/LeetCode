@@ -371,6 +371,45 @@ public:
         return dp[len1][len2] == 1;
     }
 };
+// 44. 通配符匹配
+class LT044Solution
+{
+public:
+    bool isMatch(string s, string p)
+    {
+        int m = s.size();
+        int n = p.size();
+        vector<vector<int>> dp(m + 1, vector<int>(n + 1));
+        dp[0][0] = true;
+        for (int i = 1; i <= n; ++i)
+        {
+            if (p[i - 1] == '*')
+            {
+                dp[0][i] = true;
+            }
+            else
+            {
+                break;
+            }
+        }
+        for (int i = 1; i <= m; ++i)
+        {
+            for (int j = 1; j <= n; ++j)
+            {
+                if (p[j - 1] == '*')
+                {
+                    dp[i][j] = dp[i][j - 1] | dp[i - 1][j];
+                }
+                else if (p[j - 1] == '?' || s[i - 1] == p[j - 1])
+                {
+                    dp[i][j] = dp[i - 1][j - 1];
+                }
+            }
+        }
+        return dp[m][n];
+    }
+};
+
 //给你两个单词 word1 和 word2， 请返回将 word1 转换成 word2 所使用的最少操作数  。
 // 你可以对一个单词进行如下三种操作：
 // 1.插入一个字符 2.删除一个字符 32替换一个字符
@@ -862,14 +901,14 @@ public:
         int n = nums.size();
         vector<vector<int>> dp(n + 1, vector<int>(neg + 1));
         dp[0][0] = 1;
-        //dp[i][j] 表示在数组 nums的前i个数中选取元素，使得这些元素之和等j的方案数
+        // dp[i][j] 表示在数组 nums的前i个数中选取元素，使得这些元素之和等j的方案数
         for (int i = 1; i <= n; i++)
         {
             int num = nums[i - 1];
             //枚举当选择前i个数时，和为j的方案数
             for (int j = 0; j <= neg; j++)
             {
-                 //如果不选num，上个的方案数量
+                //如果不选num，上个的方案数量
                 dp[i][j] = dp[i - 1][j];
                 //如果选num 则方案数+dp[i - 1][j - num];
                 if (j >= num)

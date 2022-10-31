@@ -59,6 +59,52 @@ public:
         return res;
     }
 };
+// 54. 螺旋矩阵
+class LT054Solution
+{
+public:
+    vector<int> spiralOrder(vector<vector<int>> &matrix)
+    {
+        vector<int> ans;
+        if (matrix.empty())
+            return ans;
+
+        int left = 0;
+        int right = matrix[0].size() - 1; //
+        int top = 0;
+        int botton = matrix.size() - 1; //
+        int i = 0;
+        int j = 0;
+        while (true)
+        {
+            for (j = left; j <= right; j++)
+            {
+                ans.push_back(matrix[top][j]);
+            }
+            if (++top > botton)
+                break;
+            for (i = top; i <= botton; i++)
+            {
+                ans.push_back(matrix[i][right]);
+            }
+            if (--right < left)
+                break;
+            for (j = right; j >= left; j--)
+            {
+                ans.push_back(matrix[botton][j]);
+            }
+            if (--botton < top)
+                break;
+            for (i = botton; i >= top; i--)
+            {
+                ans.push_back(matrix[i][left]);
+            }
+            if (++left > right)
+                break;
+        }
+        return ans;
+    }
+};
 // LT61 扑克牌顺子
 class LT61Solution
 {

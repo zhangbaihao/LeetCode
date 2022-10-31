@@ -75,6 +75,25 @@ public:
         return nums.size();
     }
 };
+// 27. 移除元素
+class LT027Solution
+{
+public:
+    int removeElement(vector<int> &nums, int val)
+    {
+        int n = nums.size();
+        int left = 0;
+        for (int right = 0; right < n; right++)
+        {
+            if (nums[right] != val)
+            {
+                nums[left] = nums[right];
+                left++;
+            }
+        }
+        return left;
+    }
+};
 // 31. 下一个排列
 class LT031Solution
 {
@@ -198,6 +217,7 @@ public:
         return res;
     }
 };
+
 // 75. 颜色分类
 class LT075Solution
 {
@@ -228,6 +248,38 @@ public:
                 ++p1;
             }
         }
+    }
+};
+// 69. x 的平方根
+class L069Solution
+{
+public:
+    int mySqrt(int x)
+    {
+        int l = 0, r = x, ans = -1;
+        while (l <= r)
+        {
+            int mid = (l + r) / 2;
+            if ((long long)mid * mid <= x)
+            {
+                ans = mid;
+                l = mid + 1;
+            }
+            else
+            {
+                r = mid - 1;
+            }
+        }
+        return ans;
+    }
+};
+//88. 合并两个有序数组
+class LT088Solution {
+public:
+    void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
+        for(int i=0;i<n;i++)
+            nums1[m+i] = nums2[i];
+        sort(nums1.begin(),nums1.end());
     }
 };
 // LT3 数组中重复的数字
