@@ -631,6 +631,32 @@ public:
         return dp[length];
     }
 };
+// 91. 解码方法
+class LT091Solution
+{
+public:
+    int numDecodings(string s)
+    {
+        int n = s.size();
+        //dp[i]表示字符串 s 的前 i 个字符 dp[1..i]的解码方法数
+        vector<int> dp(n + 1);
+        dp[0] = 1;
+        for (int i = 1; i <= n; ++i)
+        {
+            // 当前字符!=0 则解码数和之前一个字符一致
+            if (s[i - 1] != '0')
+            {
+                dp[i] += dp[i - 1];
+            }
+            //至少两个字符 前面字符不为0  当前字符和前一个字符组合 <=26  
+            if (i > 1 && s[i - 2] != '0' && ((s[i - 2] - '0') * 10 + (s[i - 1] - '0') <= 26))
+            {
+                dp[i] += dp[i - 2];
+            }
+        }
+        return dp[n];
+    }
+};
 
 // 152. 乘积最大子数组
 class LT152Solution

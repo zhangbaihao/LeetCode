@@ -43,7 +43,8 @@
         "stdexcept": "cpp",
         "streambuf": "cpp",
         "typeinfo": "cpp",
-        "functional": "cpp"
+        "functional": "cpp",
+        "xstring": "cpp"
     },
     "cmake.generator": "MinGW Makefiles"
 }

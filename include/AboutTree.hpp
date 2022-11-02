@@ -157,7 +157,49 @@ public:
         return ans;
     }
 };
-
+//103. 二叉树的锯齿形层序遍历
+class LT103Solution
+{
+public:
+    vector<vector<int>> zigzagLevelOrder(TreeNode *root)
+    {
+        vector<vector<int>> ans;
+        if (!root)
+            return ans;
+        queue<TreeNode *> q;
+        q.push(root);
+        int level = 1;//层级
+        while (!q.empty())
+        {
+            int size = q.size();
+            vector<int> temp;
+            while (size--)
+            {
+                TreeNode *t = q.front();
+                q.pop();
+                if (t->left)
+                {
+                    q.push(t->left);
+                }
+                if (t->right)
+                {
+                    q.push(t->right);
+                }
+                if (level % 2 == 0)
+                {
+                    temp.insert(temp.begin(), t->val);
+                }
+                else
+                {
+                    temp.push_back(t->val);
+                }
+            }
+            level++;
+            ans.push_back(temp);
+        }
+        return ans;
+    }
+};
 // 104. 二叉树的最大深度
 class LT104Solution
 {
@@ -191,7 +233,29 @@ public:
         return root;
     }
 };
-
+// 108. 将有序数组转换为二叉搜索树
+class LT108Solution
+{
+public:
+    // 给你一个整数数组 nums ，其中元素已经按 升序 排列，请你将其转换为一棵 高度平衡 二叉搜索树。
+    // 高度平衡 二叉树是一棵满足「每个节点的左右两个子树的高度差的绝对值不超过 1 」的二叉树。
+    TreeNode *helper(vector<int> &nums, int left, int right)
+    {
+        if (left > right)
+            return nullptr;
+        //中序
+        int mid = (left + right) / 2;
+        TreeNode *root = new TreeNode(nums[mid]);
+        //以中点划分左右子树
+        root->left = helper(nums, left, mid - 1);
+        root->right = helper(nums, mid + 1, right);
+        return root;
+    }
+    TreeNode *sortedArrayToBST(vector<int> &nums)
+    {
+        return helper(nums, 0, nums.size() - 1);
+    }
+};
 // 124. 二叉树中的最大路径和
 class LT124Solution
 {
