@@ -200,6 +200,48 @@ public:
         return dp[size];
     }
 };
+
+// 140. 单词拆分 II
+class LT140Solution
+{
+public:
+    vector<string> ans;
+    unordered_map<string, int> m_map;
+    void dfs(string s, int index, string res)
+    {
+        int n = s.length();
+        if (index >= n)
+        {
+            ans.push_back(res);
+            return;
+        }
+        if (index != 0)
+            res += " ";
+        for (int j = index; j < n; j++)
+        {
+            // 从index分割出字串，再从map查找
+            string str = s.substr(index, j - index + 1);
+            if (m_map[str])
+            {
+                string temp = res;
+                res += str;
+                // 从下j的下个字符开始分割
+                dfs(s, j + 1, res);
+                res = temp;
+            }
+        }
+    }
+    vector<string> wordBreak(string s, vector<string> &wordDict)
+    {
+        // map记录词典单词 用于查找
+        for (auto x : wordDict)
+        {
+            m_map[x]++;
+        }
+        dfs(s, 0, "");
+        return ans;
+    }
+};
 // LT11 旋转数组的最小数字
 class LT11Solution
 {

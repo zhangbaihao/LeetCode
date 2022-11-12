@@ -694,3 +694,40 @@ public:
         return ans;
     }
 };
+
+// 134. 加油站
+class LT134Solution
+{
+public:
+    int canCompleteCircuit(vector<int> &gas, vector<int> &cost)
+    {
+        int n = gas.size();
+        int i = 0; // 从第i个加油站出发
+        while (i < n)
+        {
+            int sumOfGas = 0, sumOfCost = 0;
+            int cnt = 0; // 走的总加油站数量
+            while (cnt < n)
+            {
+                int j = (i + cnt) % n;
+                sumOfGas += gas[j];
+                sumOfCost += cost[j];
+                if (sumOfCost > sumOfGas)
+                {
+                    break;
+                }
+                cnt++;
+            }
+            if (cnt == n)
+            {
+                return i;
+            }
+            else
+            {
+                // 前面走的加油站总和不满足，直接从下个加油站开始
+                i = i + cnt + 1;
+            }
+        }
+        return -1;
+    }
+};
