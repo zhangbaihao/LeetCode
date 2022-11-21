@@ -36,6 +36,24 @@ void printList(ListNode *head)
     }
     cout << endl;
 }
+// Definition for a Node.
+class Node
+{
+public:
+    int val;
+    Node *left;
+    Node *right;
+    Node *next;
+    Node *random;
+
+    Node() : val(0), left(NULL), right(NULL), next(NULL), random(NULL) {}
+
+    Node(int _val) : val(_val), left(NULL), right(NULL), next(NULL), random(NULL) {}
+
+    Node(int _val, Node *_left, Node *_right, Node *_next)
+        : val(_val), left(_left), right(_right), next(_next) {}
+};
+
 // 2.两数相加
 class LT002Solution
 {
@@ -354,6 +372,53 @@ public:
             }
         }
         return nullptr;
+    }
+};
+// 116. 填充每个节点的下一个右侧节点指针
+class LT116Solution
+{
+public:
+    Node *connect(Node *root)
+    {
+        if (root == nullptr)
+        {
+            return root;
+        }
+        // 初始化队列同时将第一层节点加入队列中，即根节点
+        queue<Node *> Q;
+        Q.push(root);
+        // 外层的 while 循环迭代的是层数
+        while (!Q.empty())
+        {
+            // 记录当前队列大小
+            int size = Q.size();
+            // 遍历这一层的所有节点
+            for (int i = 0; i < size; i++)
+            {
+
+                // 从队首取出元素
+                Node *node = Q.front();
+                Q.pop();
+
+                // 连接
+                if (i < size - 1)
+                {
+                    node->next = Q.front();
+                }
+
+                // 拓展下一层节点
+                if (node->left != nullptr)
+                {
+                    Q.push(node->left);
+                }
+                if (node->right != nullptr)
+                {
+                    Q.push(node->right);
+                }
+            }
+        }
+        // 返回根节点
+        return root;
     }
 };
 // 141. 环形链表
@@ -737,7 +802,44 @@ public:
         return pHead2->next;
     }
 };
+// 138. 复制带随机指针的链表
+class LT138Solution
+{
+public:
+    Node *copyRandomList(Node *head)
+    {
+        // 复制链表中的指针都不应指向原链表中的节点 。
+        if (!head)
+            return head;
 
+        Node *head2 = new Node(0);
+
+        Node *p1 = head;
+        Node *p2 = head2;
+        // 这题目还和剑指offer那题目不太一样，允许多个结点的val一样，所以不能用val作为key
+        unordered_map<Node *, Node *> search;
+        while (p1)
+        {
+            p2->next = new Node(p1->val);
+            p2 = p2->next;
+            if (p1)
+                search[p1] = p2;
+            p1 = p1->next;
+        }
+        // 为随机指针赋值
+        p1 = head;
+        p2 = head2->next;
+        while (p2)
+        {
+            // 通过链表1随即指针值查询链表2的结点地址
+            if (p1->random)
+                p2->random = search[p1->random];
+            p1 = p1->next;
+            p2 = p2->next;
+        }
+        return head2->next;
+    }
+};
 // LT76 删除链表中重复的结点
 class LT76Solution
 {

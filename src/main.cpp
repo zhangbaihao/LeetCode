@@ -18,7 +18,12 @@
 #include "AboutStack.hpp"
 #include "AboutTree.hpp"
 #include "AboutSum.hpp"
+<<<<<<< HEAD
 
+=======
+#include "AboutDepthFirstSearch.h"
+#include "AboutBreadthFirstSearch.h"
+>>>>>>> 55a1c80164574f675fcf9eea60b5780ea976f02a
 int main()
 {
     cout << "---Solution Call---" << endl;

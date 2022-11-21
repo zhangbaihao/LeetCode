@@ -463,7 +463,31 @@ public:
         return profits;
     }
 };
-
+// 122. 买卖股票的最佳时机 II
+class LT122Solution
+{
+public:
+    int maxProfit(vector<int> &prices)
+    {
+        if (prices.empty())
+        {
+            return 0;
+        }
+        // f[i][0]: 手上持有股票的最大收益
+        // f[i][1]: 手上不持有股票，累计最大收益
+        int n = prices.size();
+        vector<vector<int>> f(n, vector<int>(2));
+        f[0][0] = -prices[0];
+        for (int i = 1; i < n; i++)
+        {
+            // 今天买入股票和前一天买入股票对比 手上的钱
+            f[i][0] = max(f[i - 1][0], f[i - 1][1] - prices[i]);
+            // 今天卖出股票和前一天没有买入股票对比
+            f[i][1] = max(f[i - 1][1], f[i - 1][0] + prices[i]);
+        }
+        return max(f[n - 1][1], 0);
+    }
+};
 // LT71 跳台阶扩展问题
 /*描述
 一只青蛙一次可以跳上1级台阶，也可以跳上2级……它也可以跳上n级。求该青蛙跳上一个n级的台阶(n为正整数)总共有多少种跳法。
@@ -658,7 +682,26 @@ public:
         return dp[n];
     }
 };
-
+// 118. 杨辉三角
+class LT118Solution
+{
+public:
+    vector<vector<int>> generate(int numRows)
+    {
+        vector<vector<int>> ans(numRows);
+        for (int i = 0; i < numRows; i++)
+        {
+            ans[i].resize(i + 1);
+            ans[i][0] = ans[i][i] = 1;
+            //不用取到第i+1列 下标i 值为1
+            for (int j = 1; j < i; j++)
+            {
+                ans[i][j] = ans[i - 1][j - 1] + ans[i - 1][j];
+            }
+        }
+        return ans;
+    }
+};
 // 152. 乘积最大子数组
 class LT152Solution
 {

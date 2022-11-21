@@ -364,3 +364,34 @@ public:
         return ans;
     }
 };
+
+// 125. 验证回文串
+class LT125Solution
+{
+public:
+    bool isPalindrome(string s)
+    {
+        //
+        string tmp = "";
+        for (int i = 0; i < s.length(); i++)
+        {
+            if ((s[i] <= 'z' && s[i] >= 'a') || (s[i] <= '9' && s[i] >= '0'))
+            {
+                tmp += s[i];
+            }
+            else if (s[i] <= 'Z' && s[i] >= 'A')
+            {
+                tmp += (s[i] + 32);
+            }
+        }
+        //cout << tmp << endl;
+        for (int i = 0, j = tmp.length() - 1; i < j; i++, j--)
+        {
+            if (tmp[i] != tmp[j])
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+};

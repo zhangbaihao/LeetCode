@@ -158,3 +158,37 @@ public:
         return count;
     }
 };
+
+// 149. 直线上最多的点数
+class LT149Solution
+{
+public:
+    int maxPoints(vector<vector<int>> &points)
+    {
+        int n = points.size();
+        if (n == 1)
+            return 1;
+        sort(points.begin(), points.end());
+        int ans = 0;
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = i + 1; j < n; j++)
+            {
+                int tmp = 0;
+                int x1 = points[i][0], y1 = points[i][1];
+                int x2 = points[j][0], y2 = points[j][1];
+                int dy = y1 - y2, dx = x1 - x2;
+                //暴力解法 
+                for (auto &p : points)
+                {
+                    //point1 和 point2的斜率 跟 point1和所有点的斜率比较
+                    //dy / dx  == (p[1]-y1)/(p[0]-x1)
+                    if (dy * (p[0] - x1) == dx * (p[1] - y1))
+                        tmp++;
+                }
+                ans = max(ans, tmp);
+            }
+        }
+        return ans;
+    }
+};
