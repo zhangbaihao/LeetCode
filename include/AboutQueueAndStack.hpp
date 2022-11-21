@@ -513,3 +513,47 @@ public:
         return res;
     }
 };
+
+// 150. 逆波兰表达式求值
+class LT150Solution
+{
+public:
+    int evalRPN(vector<string> &tokens)
+    {
+        stack<long long> m_stack;
+        long long ans = 0;
+        for (auto &c : tokens)
+        {
+            if (c == "+" || c == "-" || c == "*" || c == "/")
+            {
+                long long second = m_stack.top();
+                m_stack.pop();
+                long long first = m_stack.top();
+                m_stack.pop();
+                long long temp = 0;
+                if (c == "+")
+                {
+                    temp = first + second;
+                }
+                else if (c == "-")
+                {
+                    temp = first - second;
+                }
+                else if (c == "*")
+                {
+                    temp = first * second;
+                }
+                else if (c == "/")
+                {
+                    temp = first / second;
+                }
+                m_stack.push(temp);
+            }
+            else
+            {
+                m_stack.push(atoi(c.c_str()));
+            }
+        }
+        return m_stack.top();
+    }
+};
