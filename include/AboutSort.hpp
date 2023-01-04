@@ -15,7 +15,7 @@ public:
         // i,j,k 分别表示第一第二第三个数 其中j+k == -i 则满足i+j+k = 0
         for (int i = 0; i < n; i++)
         {
-            //第一个数同样的只取一次
+            // 第一个数同样的只取一次
             if (i > 0 && nums[i] == nums[i - 1])
             {
                 continue;
@@ -24,7 +24,7 @@ public:
             int target = -nums[i];
             for (int j = i + 1; j < n; j++)
             {
-                //第二个数 同样的只取一次
+                // 第二个数 同样的只取一次
                 if (j > i + 1 && nums[j] == nums[j - 1])
                 {
                     continue;
@@ -52,7 +52,7 @@ public:
     int removeDuplicates(vector<int> &nums)
     {
         sort(nums.begin(), nums.end());
-        int count = 0;//删除的重复元素数量
+        int count = 0; // 删除的重复元素数量
         for (int i = 0; i < nums.size() - 1; ++i)
         {
             for (int j = count + i + 1; j < nums.size(); ++j)
@@ -103,14 +103,14 @@ public:
     {
         int n = nums.size();
         int i = n - 2;
-        //找到第一个相临的，后面比前面大的数，
+        // 找到第一个相临的，后面比前面大的数，
         while (i >= 0 && nums[i] >= nums[i + 1])
         {
             i--;
         }
         if (i >= 0)
         {
-            //从后往前找到第一个比nums[i]大的数，与之交换
+            // 从后往前找到第一个比nums[i]大的数，与之交换
             for (int j = n - 1; j >= 0; j--)
             {
                 if (nums[j] > nums[i])
@@ -120,7 +120,7 @@ public:
                 }
             }
         }
-        //其中这个i后面的都是num[i]>=num[i]+1
+        // 其中这个i后面的都是num[i]>=num[i]+1
         reverse(nums.begin() + i + 1, nums.end());
     }
 };
@@ -129,7 +129,7 @@ class LT033Solution
 {
 public:
     // nums = [4,5,6,7,0,1,2], target = 0
-    //暴力 O(n)
+    // 暴力 O(n)
     int search(vector<int> &nums, int target)
     {
         for (int i = 0; i < nums.size(); i++)
@@ -139,7 +139,7 @@ public:
         }
         return -1;
     }
-    //二分 O(logn)
+    // 二分 O(logn)
     int search2(vector<int> &nums, int target)
     {
         int n = (int)nums.size();
@@ -224,7 +224,7 @@ class LT075Solution
 public:
     // 输入：nums = [2,0,2,1,1,0]
     // 输出：[0,0,1,1,2,2]
-    //不能用sort 且O(n) 解决
+    // 不能用sort 且O(n) 解决
     void sortColors(vector<int> &nums)
     {
         int n = nums.size();
@@ -241,7 +241,7 @@ public:
                 swap(nums[i], nums[p0]);
                 if (p0 < p1)
                 {
-                    //原本P0位置一定为1，被交换到后面去了需要交换回来
+                    // 原本P0位置一定为1，被交换到后面去了需要交换回来
                     swap(nums[i], nums[p1]);
                 }
                 ++p0;
@@ -273,13 +273,15 @@ public:
         return ans;
     }
 };
-//88. 合并两个有序数组
-class LT088Solution {
+// 88. 合并两个有序数组
+class LT088Solution
+{
 public:
-    void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
-        for(int i=0;i<n;i++)
-            nums1[m+i] = nums2[i];
-        sort(nums1.begin(),nums1.end());
+    void merge(vector<int> &nums1, int m, vector<int> &nums2, int n)
+    {
+        for (int i = 0; i < n; i++)
+            nums1[m + i] = nums2[i];
+        sort(nums1.begin(), nums1.end());
     }
 };
 // LT3 数组中重复的数字
@@ -340,8 +342,8 @@ public:
 class LT128Solution
 {
 public:
-    //输入：nums = [0,3,7,2,5,8,4,6,0,1] 输出：9 0-8 O(n)
-    //暴力解法
+    // 输入：nums = [0,3,7,2,5,8,4,6,0,1] 输出：9 0-8 O(n)
+    // 暴力解法
     int longestConsecutive(vector<int> &nums)
     {
         if (nums.empty())
@@ -370,7 +372,7 @@ public:
         }
         return res;
     }
-    //利用unordered_set 去重 且可以快速计算每个元素的个数
+    // 利用unordered_set 去重 且可以快速计算每个元素的个数
     int longestConsecutive2(vector<int> &nums)
     {
         unordered_set<int> num_set;
@@ -456,14 +458,14 @@ public:
     int mod = 1000000007;
     int mergeSort(int left, int right, vector<int> &data, vector<int> &temp)
     {
-        //停止划分
+        // 停止划分
         if (left >= right)
             return 0;
-        //取中间
+        // 取中间
         int mid = (left + right) / 2;
-        //左右划分合并
+        // 左右划分合并
         int res = mergeSort(left, mid, data, temp) + mergeSort(mid + 1, right, data, temp);
-        //防止溢出
+        // 防止溢出
         res %= mod;
         int i = left, j = mid + 1;
         for (int k = left; k <= right; k++)
@@ -475,11 +477,11 @@ public:
                 data[k] = temp[j++];
             else if (j == right + 1 || temp[i] <= temp[j])
                 data[k] = temp[i++];
-            //左边temp[i]>temp[j]则区间[i]-[mid]都比右边[j]大,，答案增加
+            // 左边temp[i]>temp[j]则区间[i]-[mid]都比右边[j]大,，答案增加
             else
             {
                 data[k] = temp[j++];
-                //统计逆序对
+                // 统计逆序对
                 res += mid - i + 1;
             }
         }
@@ -504,7 +506,7 @@ public:
     //[4,5,1,6,2,7,3,8],4
     // 1 2 3 4 返回最小的4个数即可，返回[1,3,2,4]也可以
     //[1] 0 返回[]即可
-    //暴力解法排序后 for前面k个数
+    // 暴力解法排序后 for前面k个数
     vector<int> GetLeastNumbers_Solution(vector<int> input, int k)
     {
         vector<int> result;
@@ -520,25 +522,25 @@ public:
     vector<int> GetLeastNumbers_Solution2(vector<int> input, int k)
     {
         vector<int> res;
-        //排除特殊情况
+        // 排除特殊情况
         if (k == 0 || input.size() == 0)
             return res;
-        //优先队列（大根堆），只要限制堆的大小为k，那么堆顶就是k个数字的中最大值，
-        //如果需要替换，将这个最大值拿出，加入新的元素就好了。
+        // 优先队列（大根堆），只要限制堆的大小为k，那么堆顶就是k个数字的中最大值，
+        // 如果需要替换，将这个最大值拿出，加入新的元素就好了。
         priority_queue<int> q;
-        //构建一个k个大小的堆
+        // 构建一个k个大小的堆
         for (int i = 0; i < k; i++)
             q.push(input[i]);
         for (int i = k; i < input.size(); i++)
         {
-            //较小元素入堆
+            // 较小元素入堆
             if (q.top() > input[i])
             {
                 q.pop();
                 q.push(input[i]);
             }
         }
-        //堆中元素取出入vector
+        // 堆中元素取出入vector
         for (int i = 0; i < k; i++)
         {
             res.push_back(q.top());
@@ -554,8 +556,8 @@ public:
 数据范围：数据流中数个数满足 1≤n≤1000  ，大小满足1≤val≤1000
 进阶： 空间复杂度 O(n)， 时间复杂度 O(nlogn) */
 //[5,2,3,4,1,6,7,0,8]
-//返回值："5.00 3.50 3.00 3.50 3.00 3.50 4.00 3.50 4.00 "
-//说明：数据流里面不断吐出的是5,2,3...,则得到的平均数分别为5,(5+2)/2,3...
+// 返回值："5.00 3.50 3.00 3.50 3.00 3.50 4.00 3.50 4.00 "
+// 说明：数据流里面不断吐出的是5,2,3...,则得到的平均数分别为5,(5+2)/2,3...
 class LT41Solution
 {
 public:
@@ -630,7 +632,7 @@ public:
         }
         if (size % 2 == 1)
         {
-            cout << temp[index]; //这里注释或者去掉会出错，leetcode真的有毛病
+            cout << temp[index]; // 这里注释或者去掉会出错，leetcode真的有毛病
             return temp[index];
         }
         else
@@ -669,7 +671,7 @@ public:
         sort(temp.begin(), temp.end());
         int n = nums.size();
         int start = 0;
-        //找到第一个不对的i
+        // 找到第一个不对的i
         for (int i = 0; i < n; i++)
         {
             if (nums[i] != temp[i])
@@ -678,7 +680,7 @@ public:
                 break;
             }
         }
-        //从后往前找第一个不符合升序的下标
+        // 从后往前找第一个不符合升序的下标
         int end = -1;
         for (int i = n - 1; i >= 0; i--)
         {
@@ -699,15 +701,15 @@ public:
     {
         int len = tasks.size();
         vector<int> vec(26);
-        //统计每个任务的数量
+        // 统计每个任务的数量
         for (char c : tasks)
             ++vec[c - 'A'];
 
-        //按照任务数量从大到小
+        // 按照任务数量从大到小
         sort(vec.begin(), vec.end(), [](int &x, int &y)
              { return x > y; });
 
-        //找到和最大任务数量一样大的 任务项数量 A:6 B:6 C:5 则cnt = 2
+        // 找到和最大任务数量一样大的 任务项数量 A:6 B:6 C:5 则cnt = 2
         int cnt = 1;
         while (cnt < vec.size() && vec[cnt] == vec[0])
             cnt++;
@@ -720,11 +722,11 @@ public:
         return max(len, cnt + (n + 1) * (vec[0] - 1));
     }
 };
-//基本排序算法
+// 基本排序算法
 class AoubtBaseSortSolution
 {
 public:
-    //希尔排序 根据gap跨度分组 O(n^1.3) 不稳定 内排序
+    // 希尔排序 根据gap跨度分组 O(n^1.3) 不稳定 内排序
     void shellSort(int *data, int length)
     {
         // 分组每次取一半，最后到两重复上述步骤 直到gap=1 （gap=1其实就是完全的插入排序）
@@ -733,33 +735,33 @@ public:
         {
             for (int i = gap; i < length; i++)
             {
-                int temp = data[i]; //保存当前需要调整的值
-                int j = i - gap;    //取组内的前一个元素
+                int temp = data[i]; // 保存当前需要调整的值
+                int j = i - gap;    // 取组内的前一个元素
                 // 每组遍历
                 while (j >= 0 && temp < data[j])
                 {
-                    //组内排序 类似插入一样，前面有序整体后移
+                    // 组内排序 类似插入一样，前面有序整体后移
                     data[j + gap] = data[j];
                     j = j - gap;
                 }
-                //将temp插入合适位置
+                // 将temp插入合适位置
                 data[j + gap] = temp;
             }
         }
     }
-    //快速排序 O(nlogn) 不稳定 调用(data,0,n-1)
+    // 快速排序 O(nlogn) 不稳定 调用(data,0,n-1)
     void quickSort(int *data, int left, int right)
     {
         int i = left;
         int j = right;
-        int temp = data[(i + j) / 2]; //基数取中
+        int temp = data[(i + j) / 2]; // 基数取中
         while (i <= j)
         {
-            while (data[i] < temp) //找到比基数大时i停止
+            while (data[i] < temp) // 找到比基数大时i停止
                 i++;
-            while (data[j] > temp) //找到比基数小时j停止
+            while (data[j] > temp) // 找到比基数小时j停止
                 j--;
-            if (i <= j) //满足条件交换
+            if (i <= j) // 满足条件交换
             {
                 if (i != j)
                     swap(data[i], data[j]);
@@ -772,12 +774,12 @@ public:
         if (i < right) // i在right左边，需要处理基数右边的序列
             quickSort(data, i, right);
     }
-    //合并操作
+    // 合并操作
     void merge(int arr[], int left, int mid, int right, int temp[])
     {
-        int i = left;    //左序列指针
-        int j = mid + 1; //右序列指针
-        int t = 0;       //临时数组指针
+        int i = left;    // 左序列指针
+        int j = mid + 1; // 右序列指针
+        int t = 0;       // 临时数组指针
         while (i <= mid && j <= right)
         {
             if (arr[i] <= arr[j])
@@ -786,37 +788,37 @@ public:
                 temp[t++] = arr[j++];
         }
         while (i <= mid)
-        { //将左边剩余元素填充进temp中
+        { // 将左边剩余元素填充进temp中
             temp[t++] = arr[i++];
         }
         while (j <= right)
-        { //将右序列剩余元素填充进temp中
+        { // 将右序列剩余元素填充进temp中
             temp[t++] = arr[j++];
         }
         t = 0;
-        //将temp中的元素全部拷贝到原数组中
+        // 将temp中的元素全部拷贝到原数组中
         while (left <= right)
         {
             arr[left++] = temp[t++];
         }
     }
-    //归并排序 O(nlogn) 稳定 temp排序内辅助空间与arr大小相同
+    // 归并排序 O(nlogn) 稳定 temp排序内辅助空间与arr大小相同
     void mergeSort(int arr[], int left, int right, int temp[])
     {
         if (left < right)
         {
             int mid = (left + right) / 2;
-            mergeSort(arr, left, mid, temp);      //左边归并排序，使得左子序列有序
-            mergeSort(arr, mid + 1, right, temp); //右边归并排序，使得右子序列有序
-            merge(arr, left, mid, right, temp);   //将两个有序子数组合并操作
+            mergeSort(arr, left, mid, temp);      // 左边归并排序，使得左子序列有序
+            mergeSort(arr, mid + 1, right, temp); // 右边归并排序，使得右子序列有序
+            merge(arr, left, mid, right, temp);   // 将两个有序子数组合并操作
         }
     }
 };
 
-//堆排序
+// 堆排序
 class HeapSortSolution
 {
-    //对有一定顺序的堆，当前第i个结点取根左右的最大值（这个操作称heapfiy）
+    // 对有一定顺序的堆，当前第i个结点取根左右的最大值（这个操作称heapfiy）
     void heapify(vector<int> &nums, int n, int i)
     {
         int l = i * 2 + 1, r = i * 2 + 2;
@@ -828,15 +830,15 @@ class HeapSortSolution
         if (max != i)
         {
             swap(nums[max], nums[i]);
-            //因为交换了，还需要向下调整
+            // 因为交换了，还需要向下调整
             heapify(nums, n, max);
         }
     }
-    //建立大根堆
+    // 建立大根堆
     void heapify_build(vector<int> &nums, int n)
     {
-        //由最后一个结点下标是n-1，parent = (i-1)/2
-        //从最后一个结点的 倒数第二层结点开始，对每个结点进行heapify操作，然后向上走
+        // 由最后一个结点下标是n-1，parent = (i-1)/2
+        // 从最后一个结点的 倒数第二层结点开始，对每个结点进行heapify操作，然后向上走
         int temp = (n - 2) / 2;
         for (int i = temp; i >= 0; i--)
             heapify(nums, n, i);
@@ -844,17 +846,238 @@ class HeapSortSolution
             cout << nums[i] << " ";
         cout << endl;
     }
-    //数组 总共有n个结点
+    // 数组 总共有n个结点
     void heapify_sort(vector<int> &nums, int n)
     {
-        //建立大根堆
+        // 建立大根堆
         heapify_build(nums, n);
-        //每次交换最后一个结点和根节点（最大值），
-        //对交换后的根节点继续进行heapify（此时堆的最后一位是最大值，因此不用管他，n变为n-1）
+        // 每次交换最后一个结点和根节点（最大值），
+        // 对交换后的根节点继续进行heapify（此时堆的最后一位是最大值，因此不用管他，n变为n-1）
         for (int i = 0; i < n; i++)
         {
             swap(nums.front(), nums[n - i - 1]);
             heapify(nums, n - i - 1, 0);
         }
+    }
+};
+
+// 268. 丢失的数字
+class LT268Solution
+{
+public:
+    //[1]:[0]   [0,1,2]:3
+    int missingNumber(vector<int> &nums)
+    {
+        sort(nums.begin(), nums.end());
+        int n = nums.size();
+
+        int minValue = nums[0];
+        // 一定从0开始
+        if (minValue != 0)
+            return 0;
+        // 如果都按顺序存在，那么缺少的就是下个数字
+        int ans = nums[n - 1] + 1;
+        for (int i = 0; i < n; i++)
+        {
+            if (nums[i] != (minValue + i))
+            {
+                ans = minValue + i;
+                break;
+            }
+        }
+        return ans;
+    }
+};
+
+// 295. 数据流的中位数
+class MedianFinder
+{
+public:
+    int preSize = 0;
+    // multiset 自动排序可重复
+    multiset<int> temp;
+    multiset<int>::iterator mid;
+    MedianFinder()
+    {
+    }
+    void addNum(int num)
+    {
+        preSize = temp.size();
+        temp.insert(num);
+        if (preSize == 0)
+        {
+            mid = temp.begin();
+            return;
+        }
+        int midNumber = *mid;
+        // 与之前比较是往后插入 往后插入 偶数->奇数 则mid++ 奇数->偶数 不变
+        if (num >= midNumber)
+        {
+            if (preSize % 2 == 0)
+            {
+                mid++;
+            }
+        }
+        else
+        {
+            // 往前插入 偶数->奇数 则不变 奇数->偶数 不变
+            if (preSize % 2 != 0)
+            {
+                mid--;
+            }
+        }
+    }
+    // multiset大小 判断mid计算方式
+    double findMedian()
+    {
+        if (temp.size() % 2 == 0)
+        {
+            int number1 = *mid;
+            mid++;
+            int number2 = *mid;
+            mid--;
+            return (number1 + number2) / 2.0;
+        }
+        else
+        {
+            return *mid;
+        }
+    }
+};
+
+// 315. 计算右侧小于当前元素的个数
+class LT315Solution
+{
+private:
+    // 由于我们的Record类里面有值，因此可以将对int数组的排序改成对Record数组的排序
+    vector<std::pair<int, int>> temp;
+    vector<std::pair<int, int>> Records;
+    vector<int> ans; // 记录答案 每个元素右侧更小元素的个数
+public:
+    void merge(vector<std::pair<int, int>> &m_records, int left, int mid, int right)
+    {
+        for (int i = left; i <= right; i++)
+        {
+            temp[i] = m_records[i];
+        }
+        // 左右指针
+        int l = left, r = mid + 1;
+        for (int i = left; i <= right; i++)
+        {
+            if (l == mid + 1)
+            {
+                m_records[i] = temp[r++];
+            }
+            else if (r == right + 1)
+            {
+                // 此时右边子数组的所有元素都比当前元素小
+                ans[temp[l].first] += r - mid - 1;
+                m_records[i] = temp[l++];
+            }
+            else if (temp[l].second <= temp[r].second)
+            {
+                // 这里左边小于右边 temp[r] 子数组元素时,说明右边从(mid+1)~r-1 的元素均小于temp[l],计算一下个数:r=mid+1+count - mid+1
+                ans[temp[l].first] += r - mid - 1;
+                m_records[i] = temp[l++];
+            }
+            else
+            {
+                m_records[i] = temp[r++];
+            }
+        }
+    }
+    void sort(vector<std::pair<int, int>> &m_records, int left, int right)
+    {
+        if (left == right)
+            return;
+        int mid = left + (right - left) / 2;
+        sort(Records, left, mid);
+        sort(Records, mid + 1, right);
+        merge(Records, left, mid, right);
+    }
+    vector<int> countSmaller(vector<int> &nums)
+    {
+        ans.resize(nums.size());
+        temp.resize(nums.size());
+        for (int i = 0; i < nums.size(); i++)
+        {
+            Records.push_back(make_pair(i, nums[i]));
+        }
+        sort(Records, 0, nums.size() - 1);
+        return ans;
+    }
+};
+
+// 324. 摆动排序 II
+class LT324Solution
+{
+public:
+    void wiggleSort(vector<int> &nums)
+    {
+        int n = nums.size();
+        vector<int> arr = nums;
+        // 排序后,
+        sort(arr.begin(), arr.end());
+        // 保证size== 奇数时,最后多出一个一定是放在nums[i]故j下标可能多取一个
+        int x = (n + 1) / 2;
+        for (int i = 0, j = x - 1, k = n - 1; i < n; i += 2, j--, k--)
+        {
+            // 两两一组 保证nums[i]<nums[i+1] 同时arr[j]从中间开始 保证了arr[j]<arr[k]
+            nums[i] = arr[j];
+            if (i + 1 < n)
+            {
+                nums[i + 1] = arr[k];
+            }
+        }
+    }
+};
+
+// 378. 有序矩阵中第 K 小的元素
+class LT378Solution
+{
+public:
+    int kthSmallest(vector<vector<int>> &matrix, int k)
+    {
+        int count = 0;
+        vector<int> temp;
+        for (int i = 0; i < matrix.size(); i++)
+        {
+            for (int j = 0; j < matrix[i].size(); j++)
+            {
+                temp.push_back(matrix[i][j]);
+            }
+        }
+        sort(temp.begin(), temp.end());
+
+        return temp[k - 1];
+    }
+};
+
+// 384. 打乱数组
+class LT384Solution
+{
+public:
+    vector<int> m_nums;
+    LT384Solution(vector<int> &nums)
+    {
+        m_nums = nums;
+    }
+    vector<int> reset()
+    {
+        return m_nums;
+    }
+
+    vector<int> shuffle()
+    {
+        vector<int> res;
+        vector<int> temp = m_nums;
+
+        for (int i = 0; i < m_nums.size(); i++)
+        {
+            int randomIndex = rand() % temp.size();
+            res.push_back(temp[randomIndex]);
+            temp.erase(temp.begin() + randomIndex);
+        }
+        return res;
     }
 };

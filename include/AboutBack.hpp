@@ -430,3 +430,214 @@ public:
         return ret;
     }
 };
+
+// 212. 单词搜索 II 前缀树+回溯  
+class LT212Solution
+{
+public:
+    int dirs[4][2] = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+    // 定义前缀树
+    struct TrieNode
+    {
+        string word;
+        unordered_map<char, TrieNode *> children;
+        TrieNode()
+        {
+            this->word = "";
+        }
+    };
+    //建立前缀树
+    void insertTrie(TrieNode *root, const string &word)
+    {
+        TrieNode *node = root;
+
+        for (auto c : word)
+        {   //第一次字符
+            if (!node->children.count(c))
+            {
+                node->children[c] = new TrieNode();
+            }
+            node = node->children[c];
+        }
+
+        node->word = word;
+    }
+    bool dfs(vector<vector<char>> &board, int x, int y, TrieNode *root, set<string> &res)
+    {
+        // 保存用于回溯
+        char ch = board[x][y];
+
+        if (root == nullptr || !root->children.count(ch))
+        {
+            return false;
+        }
+        //oath 走到h的Node 查看word是否被匹配过了
+        TrieNode *nxt = root->children[ch];
+        if (nxt->word.size() > 0)
+        {
+            res.insert(nxt->word);
+            nxt->word = "";//设置为匹配过
+        }
+        //结点还有后续
+        if (!nxt->children.empty())
+        {
+            board[x][y] = '#';
+            for (int i = 0; i < 4; ++i)
+            {
+                int nx = x + dirs[i][0];
+                int ny = y + dirs[i][1];
+                if (nx >= 0 && nx < board.size() && ny >= 0 && ny < board[0].size())
+                {
+                    if (board[nx][ny] != '#')
+                    {
+                        dfs(board, nx, ny, nxt, res);
+                    }
+                }
+            }
+            board[x][y] = ch;
+        }
+        //当前走到的结点后续全走完 从前缀树中移除
+        if (nxt->children.empty())
+        {
+            root->children.erase(ch);
+        }
+
+        return true;
+    }
+
+    vector<string> findWords(vector<vector<char>> &board, vector<string> &words)
+    {
+        TrieNode *root = new TrieNode();
+
+        for (auto &word : words)
+        {
+            insertTrie(root, word);
+        }
+
+        set<string> res;
+        for (int i = 0; i < board.size(); ++i)
+        {
+            for (int j = 0; j < board[0].size(); ++j)
+            {
+                dfs(board, i, j, root, res);
+            }
+        }
+
+        vector<string> ans;
+        for (auto &word : res)
+        {
+            ans.emplace_back(word);
+        }
+
+        return ans;
+    }
+};
+
+// 289. 生命游戏
+class LT289Solution
+{
+public:
+    int isLiveOrDie(vector<vector<int>> &board, int row, int col)
+    {
+
+        int surroundingLivingCells = 0;
+        for (int i = row - 1; i <= row + 1; i++)
+        {
+            if (i >= 0 && i < board.size())
+            {
+                for (int j = col - 1; j <= col + 1; j++)
+                {
+                    if (j >= 0 && j < board[i].size())
+                    {
+                        if (i == row && j == col)
+                            continue;
+                        if (board[i][j] == 1)
+                            surroundingLivingCells++;
+                    }
+                }
+            }
+        }
+        // 原本状态
+        if (board[row][col] == 1)
+        {
+            if (surroundingLivingCells == 2 || surroundingLivingCells == 3)
+                return 1;
+            else
+                return 0;
+        }
+        else
+        {
+            if (surroundingLivingCells == 3)
+                return 1;
+            else
+                return 0;
+        }
+    }
+    void gameOfLife(vector<vector<int>> &board)
+    {
+        // 活细胞->死细胞 周围活细胞数目  不等于 2和3
+        // 死细胞->活细胞 周围有3个活细胞
+        vector<vector<int>> nextBoard = board;
+        for (int i = 0; i < board.size(); i++)
+        {
+            for (int j = 0; j < board[i].size(); j++)
+            {
+                nextBoard[i][j] = isLiveOrDie(board, i, j);
+            }
+        }
+        board = nextBoard;
+    }
+};
+
+// 329. 矩阵中的最长递增路径
+class LT329Solution
+{
+public:
+    int dirct[4][2] = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+    int ans = 0;
+    int rows;
+    int cols;
+    int dfs(vector<vector<int>> &matrix, int row, int col, vector<vector<int>> &flag)
+    {
+        if (flag[row][col] != 0)
+            return flag[row][col];
+        flag[row][col]++;
+        // 下上右左四个方向走
+        for (int i = 0; i < 4; i++)
+        {
+            int x = row + dirct[i][0];
+            int y = col + dirct[i][1];
+            if (x >= 0 && x < rows && y >= 0 && y < cols)
+            {
+                if (matrix[x][y] > matrix[row][col])
+                {
+                    flag[row][col] = max(flag[row][col], dfs(matrix, x, y, flag) + 1);
+                }
+            }
+        }
+        return flag[row][col];
+    }
+
+    int longestIncreasingPath(vector<vector<int>> &matrix)
+    {
+        if (matrix.size() == 0 || matrix[0].size() == 0)
+        {
+            return 0;
+        }
+
+        rows = matrix.size();
+        cols = matrix[0].size();
+        /*使用记忆化深度优先搜索，当访问到一个单元格 (i,j)时，如果 memo[i][j]
+        ≠0说明该单元格的结果尚未被计算过，则进行搜索，并将计算得到的结果存入缓存中。
+        =0说明该单元格的结果已经计算过，则直接从缓存中读取结果，遍历完矩阵中的所有单元格之后，即可得到矩阵中的最长递增路径的长度*/
+        vector<vector<int>> dp(rows, vector<int>(cols, 0));
+        for (int row = 0; row < rows; row++)
+        {
+            for (int col = 0; col < cols; col++)
+            {
+                ans = max(ans, dfs(matrix, row, col, dp));
+            }
+        }
+        return ans;
+    }
+};

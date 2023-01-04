@@ -31,6 +31,28 @@ public:
         return res;
     }
 };
+// 230. 二叉搜索树中第K小的元素
+class LT230Solution
+{
+public:
+    void inorder(TreeNode *root, vector<int> &res)
+    {
+        if (!root)
+        {
+            return;
+        }
+        inorder(root->left, res);
+        res.push_back(root->val);
+        inorder(root->right, res);
+    }
+    int kthSmallest(TreeNode *root, int k)
+    {
+        vector<int> ans;
+        // 二叉搜索树木中序遍历 是从小到大
+        inorder(root, ans);
+        return ans[k - 1];
+    }
+};
 // 114. 二叉树展开为链表
 class LT114Solution
 {

@@ -395,3 +395,99 @@ public:
         return true;
     }
 };
+
+
+// 242. 有效的字母异位词
+class LT242Solution
+{
+public:
+    bool isAnagram(string s, string t)
+    {
+        if (s.length() != t.length())
+        {
+            return false;
+        }
+        map<char, int> m_s;
+        for (int i = 0; i < s.length(); i++)
+        {
+            char c_s = s[i];
+            char c_t = t[i];
+            m_s[c_s]++;
+            m_s[c_t]--;
+        }
+        for (auto it = m_s.begin(); it != m_s.end(); it++)
+        {
+            if (it->second != 0)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+};
+
+// 344. 反转字符串
+class LT344Solution
+{
+public:
+    void reverseString(vector<char> &s)
+    {
+        vector<char> temp = s;
+        int size = s.size();
+        for (int i = 0; i < size; i++)
+        {
+            s[i] = temp[size - i - 1];
+        }
+    }
+};
+// 387. 字符串中的第一个唯一字符
+class LT387Solution
+{
+public:
+    int firstUniqChar(string s)
+    {
+        map<char, int> m_map;
+        for (auto c : s)
+        {
+            m_map[c]++;
+        }
+        for (int i = 0; i < s.size(); ++i)
+        {
+            if (m_map[s[i]] == 1)
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+};
+
+// 412. Fizz Buzz
+class LT412Solution
+{
+public:
+    vector<string> fizzBuzz(int n)
+    {
+        vector<string> res(n,"");
+        for (int i = 1; i <= n; i++)
+        {
+            if (i % 3 == 0 && i % 5 == 0)
+            {
+                res[i-1] = "FizzBuzz";
+            }
+            else if (i % 3 == 0)
+            {
+                res[i-1] = "Fizz";
+            }
+            else if (i % 5 == 0)
+            {
+                res[i-1] = "Buzz";
+            }
+            else
+            {
+                res[i-1] = to_string(i);
+            }
+        }
+        return res;
+    }
+};

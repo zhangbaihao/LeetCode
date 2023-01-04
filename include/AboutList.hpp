@@ -1,16 +1,21 @@
 ﻿#pragma once
 #include "Util.h"
-class Node {
+
+class Node
+{
 public:
     int val;
-    Node* next;
-    Node* random;
-    
-    Node(int _val) {
-        val = _val;
-        next = NULL;
-        random = NULL;
-    }
+    Node *left;
+    Node *right;
+    Node *next;
+    Node *random;
+
+    Node() : val(0), left(NULL), right(NULL), next(NULL), random(NULL) {}
+
+    Node(int _val) : val(_val), left(NULL), right(NULL), next(NULL), random(NULL) {}
+
+    Node(int _val, Node *_left, Node *_right, Node *_next)
+        : val(_val), left(_left), right(_right), next(_next) {}
 };
 
 struct ListNode
@@ -37,22 +42,6 @@ void printList(ListNode *head)
     cout << endl;
 }
 // Definition for a Node.
-class Node
-{
-public:
-    int val;
-    Node *left;
-    Node *right;
-    Node *next;
-    Node *random;
-
-    Node() : val(0), left(NULL), right(NULL), next(NULL), random(NULL) {}
-
-    Node(int _val) : val(_val), left(NULL), right(NULL), next(NULL), random(NULL) {}
-
-    Node(int _val, Node *_left, Node *_right, Node *_next)
-        : val(_val), left(_left), right(_right), next(_next) {}
-};
 
 // 2.两数相加
 class LT002Solution
@@ -957,5 +946,43 @@ public:
             }
         }
         return 0;
+    }
+};
+
+// 237. 删除链表中的节点
+class LT237Solution
+{
+public:
+    // 5-1-2
+    // 5-2->nullptr
+    void deleteNode(ListNode *node)
+    {
+        node->val = node->next->val;
+        node->next = node->next->next;
+    }
+};
+
+// 328. 奇偶链表
+class LT328Solution
+{
+public:
+    ListNode *oddEvenList(ListNode *head)
+    {
+        if (!head)
+            return head;
+
+        ListNode *odd = head;        // 奇数
+        ListNode *even = head->next; // 偶数
+        ListNode *evenHead = head->next;
+        while (even && even->next)
+        {
+            odd->next = even->next;
+            odd = odd->next;
+
+            even->next = odd->next;
+            even = even->next;
+        }
+        odd->next = evenHead;
+        return head;
     }
 };

@@ -198,3 +198,37 @@ public:
     }
 };
 
+// 326. 3 的幂
+class LT326Solution
+{
+public:
+    bool isPowerOfThree(int n)
+    {
+        while (n && n % 3 == 0)
+        {
+            n /= 3;
+        }
+        return n == 1;
+    }
+    // 最大的 333 的幂为 319=11622614673^{19} = 11622614673
+    bool isPowerOfThree2(int n)
+    {
+        return n > 0 && 1162261467 % n == 0;
+    }
+};
+// 371. 两整数之和
+class LT371Solution
+{
+public:
+    int getSum(int a, int b)
+    {
+        /*在不考虑进位的情况下，其无进位加法结果为 a⊕b。而所有需要进位的位为 a & b，进位后的进位结果为 (a & b) << 1。。*/
+        while (b != 0)
+        {
+            unsigned int carry = (unsigned int)(a & b) << 1;
+            a = a ^ b; // 记录a和b无进位的异或结果
+            b = carry;
+        }
+        return a;
+    }
+};

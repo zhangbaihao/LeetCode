@@ -113,3 +113,65 @@ public:
         return ans;
     }
 };
+
+// 395. 至少有 K 个重复字符的最长子串
+class LT395Solution
+{
+public:
+    int longestSubstring(string s, int k)
+    {
+        int ret = 0;
+        int n = s.length();
+        // 滑动窗口支持字符种类的数量,从1 类似aaaa这种到 26 支持aababcccb这种
+        for (int t = 1; t <= 26; t++)
+        {
+            int l = 0, r = 0;
+            // 滑动窗口内部每个字符出现的次数
+            vector<int> cnt(26, 0);
+            // 滑动窗口内的字符种类数目
+            int tot = 0;
+            // 计数器 less，代表滑动窗口中当前出现次数小于 k 的字符的数量
+            int less = 0;
+            while (r < n)
+            {
+                cnt[s[r] - 'a']++; // 滑动窗口右边界添加次数
+                // 次数等于1,代表新加入字符
+                if (cnt[s[r] - 'a'] == 1)
+                {
+                    tot++;
+                    less++;
+                }
+                // 滑动窗口中的所有字符都满足K个以上数量
+                if (cnt[s[r] - 'a'] == k)
+                {
+                    less--;
+                }
+                // 当滑动窗口中字符种类数大于枚举的字符种类数量时
+                // 循环移动左边界,去掉滑动窗口最左边字符
+                while (tot > t)
+                {
+                    cnt[s[l] - 'a']--;
+                    // 数量刚好不满足
+                    if (cnt[s[l] - 'a'] == k - 1)
+                    {
+                        less++;
+                    }
+                    // 没有该字符,则种类数-1,同时less也统计-1
+                    if (cnt[s[l] - 'a'] == 0)
+                    {
+                        tot--;
+                        less--;
+                    }
+                    l++;
+                }
+                // 滑动窗口中字符都满足数量 >= K
+                if (less == 0)
+                {
+                    ret = max(ret, r - l + 1);
+                }
+                r++;
+            }
+        }
+        return ret;
+    }
+};

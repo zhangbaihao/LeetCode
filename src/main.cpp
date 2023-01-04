@@ -1,5 +1,4 @@
-﻿#include <iostream>
-#include "AboutAnOperation.hpp"
+﻿#include "AboutAnOperation.hpp"
 #include "AboutBack.hpp"
 #include "AboutChart.hpp"
 #include "AboutCheckAndSet.hpp"
@@ -18,14 +17,16 @@
 #include "AboutStack.hpp"
 #include "AboutTree.hpp"
 #include "AboutSum.hpp"
-<<<<<<< HEAD
-
-=======
 #include "AboutDepthFirstSearch.h"
 #include "AboutBreadthFirstSearch.h"
->>>>>>> 55a1c80164574f675fcf9eea60b5780ea976f02a
+#include "AboutSpecialClass.hpp"
+
+
+
 int main()
 {
+    Solution TEST;
+    TEST.fizzBuzz(3);
     cout << "---Solution Call---" << endl;
     return 0;
 }

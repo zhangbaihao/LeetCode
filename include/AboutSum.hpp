@@ -192,3 +192,80 @@ public:
         return ans;
     }
 };
+
+
+// 227. 基本计算器 II
+class LT227Solution
+{
+public:
+    int calculate(string s)
+    {
+        // 记录所有剩下只需要求和的数
+        vector<int> stk;
+        char preSign = '+';
+        int num = 0;
+        int n = s.length();
+        for (int i = 0; i < n; ++i)
+        {
+            if (isdigit(s[i]))
+            {
+                num = num * 10 + int(s[i] - '0');
+            }
+            // 遇到下一个符号或者结尾，才计算上个符号操作
+            // 3-2*2 遇到*，上个是- 则处理为-2入栈,记录符号，等待下个数准备计算
+            if (!isdigit(s[i]) && s[i] != ' ' || i == n - 1)
+            {
+                switch (preSign)
+                {
+                case '+':
+                    stk.push_back(num);
+                    break;
+                case '-':
+                    stk.push_back(-num);
+                    break;
+                case '*':
+                    stk.back() *= num;
+                    break;
+                default:
+                    stk.back() /= num;
+                }
+                preSign = s[i];
+                num = 0;
+            }
+        }
+        // 全部求和
+        return accumulate(stk.begin(), stk.end(), 0);
+    }
+};
+
+// 454. 四数相加 II
+class LT454Solution
+{
+public:
+    int fourSumCount(vector<int> &A, vector<int> &B, vector<int> &C, vector<int> &D)
+    {
+        // 利用map存AB数组和
+        unordered_map<int, int> countAB;
+        for (int u : A)
+        {
+            for (int v : B)
+            {
+                ++countAB[u + v];
+            }
+        }
+        int ans = 0;
+        // map中查找在CD数组中key=-(c+d)的次数,如a+b = 4  c+d = -4->key=4  可以找到
+        for (int u : C)
+        {
+            for (int v : D)
+            {
+                int key = -(u + v);
+                if (countAB.count(key))
+                {
+                    ans += countAB[key];
+                }
+            }
+        }
+        return ans;
+    }
+};
